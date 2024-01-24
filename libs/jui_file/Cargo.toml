@@ -7,6 +7,7 @@ readme = "Readme.md"
 authors = ["The jui developers"]
 license = "MIT/Apache-2.0"
 categories = ["data-structures"]
+repository = "https://github.com/lifeRobot/jui/tree/master/libs/jui_file"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

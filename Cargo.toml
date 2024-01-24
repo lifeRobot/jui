@@ -13,6 +13,7 @@ authors = ["The jui developers"]
 license = "MIT/Apache-2.0"
 keywords = ["gui", "slint"]
 categories = ["gui"]
+repository = "https://github.com/lifeRobot/jui"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
