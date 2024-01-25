@@ -1,0 +1,64 @@
+import { Input } from "input.slint";
+
+export component UnderlineInput {
+    // copy input attr
+    in-out property <string> text <=> input.text;
+    in property <brush> color <=> input.color;
+    in property <bool> enabled <=> input.enabled;
+    in property <bool> read_only <=> input.read_only;
+    in property <InputType> input_type <=> input.input_type;
+    in property <TextHorizontalAlignment> horizontal_alignment <=> input.horizontal_alignment;
+    in property <length> font_size <=> input.font_size;
+    out property <bool> has_focus <=> input.has_focus;
+    in property <string> placeholder_text <=> input.placeholder_text;
+    in property <brush> placeholder_color: gray;
+    in property <image> prefix_icon <=> input.prefix_icon;
+
+    // own attr
+    // underline color default gray
+    in property <brush> underline_color: gray;
+    // underline color of mouse hover or focus
+    in property <brush> hover_color;
+    in property <MouseCursor> mouse_cursor: MouseCursor.text;
+    // if verify=false, underline color will be red
+    in property <bool> verify: true;
+    // reserved attr, coming soon
+    in property <string> verify_msg;
+
+    callback accepted <=> input.accepted;
+    callback edited <=> input.edited;
+
+    forward-focus: input;
+
+    private property <brush> logic_color: input.has_focus || touch.has_hover ? hover_color : underline_color;
+
+    // control underline color
+    states [
+        verify_fail when !verify: {
+            logic_color: red;
+        }
+    ]
+
+    Rectangle {
+        input:= Input {
+            width: parent.width;
+            placeholder_color: placeholder_color;
+        }
+
+        underline:= Rectangle {
+            y: parent.height;
+            width: input.width + 20px;
+            height: 1px;
+            background: logic_color;
+        }
+    }
+
+    // mouse hover attr and etc
+    touch:= TouchArea {
+        mouse-cursor: mouse_cursor;
+
+        clicked => {
+            input.focus();
+        }
+    }
+}

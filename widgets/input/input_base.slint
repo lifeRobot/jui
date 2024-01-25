@@ -1,0 +1,65 @@
+export component InputBase {
+    in property <string> text <=> input.text;
+    in property <brush> color;
+    in property <length> font_size <=> input.font-size;
+    in property <int> font_weight <=> input.font-weight;
+    in property <InputType> input_type <=> input.input-type;
+    in property <bool> enabled <=> input.enabled;
+    in property <bool> read_only <=> input.read-only;
+    in property <bool> has_focus: input.has-focus;
+    in property <TextHorizontalAlignment> horizontal_alignment <=> input.horizontal-alignment;
+    in property <color> selection_background_color <=> input.selection-background-color;
+    in property <color> selection_foreground_color <=> input.selection-foreground-color;
+    in property <string> placeholder_text;
+    in property <brush> placeholder_color;
+    in property <length> margin;
+
+    callback accepted(string);
+    callback edited(string);
+
+    forward-focus: input;
+
+    Rectangle {
+        min-height: input.preferred-height;
+        min-width: max(50px, placeholder.min-width);
+        clip: true;
+
+        // placeholder
+        placeholder:= Text {
+            width: 100%;
+            height: 100%;
+            vertical-alignment: center;
+            text: (root.text == "" && input.preedit-text == "") ? root.placeholder_text : "";
+            font-size: input.font-size;
+            font-italic: input.font-italic;
+            font-weight: input.font-weight;
+            font-family: input.font-family;
+            color: placeholder_color;
+            horizontal-alignment: horizontal_alignment;
+        }
+
+        // input
+        input:= TextInput {
+            property <length> computed-x;
+
+            x: min(0px, max(parent.width - self.width - self.text-cursor-width, self.computed-x));
+            width: max(parent.width - self.text-cursor-width, self.preferred-width);
+            height: 100%;
+            vertical-alignment: center;
+            single-line: true;
+            color: color;
+
+            cursor-position-changed(cpos) => {
+                if (cpos.x + self.computed_x < root.margin) {
+                    self.computed_x = - cpos.x + root.margin;
+                } else if (cpos.x + self.computed_x > parent.width - root.margin - self.text-cursor-width) {
+                    self.computed_x = parent.width - cpos.x - root.margin - self.text-cursor-width;
+                }
+            }
+
+            accepted => { accepted(self.text); }
+
+            edited => { edited(self.text); }
+        }
+    }
+}

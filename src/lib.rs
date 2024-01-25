@@ -5,7 +5,7 @@ use slint_build::{CompileError, CompilerConfiguration};
 
 /// Compile the .slint file and generate rust code for it.
 pub fn compile(path: impl AsRef<Path>) -> Result<(), CompileError> {
-    let version = "0.1.0";
+    let version = "0.1.1";
     let jui_path = get_jui_path();
     let version_file = jui_path.clone().join("version");
 
@@ -66,27 +66,42 @@ fn lock_version(version_file: &PathBuf, version: &str) {
 fn copy_slint_file(jui_path: PathBuf) {
     // fs::read_dir will be fail, so currently, only [include-bytes] can be used
     // load all slint file
-    let index = include_bytes!("../widgets/index.slint");
-    let test = include_bytes!("../widgets/test.slint");
+    let button = include_bytes!("../widgets/button.slint");
+    // input
+    let input_base = include_bytes!("../widgets/input/input_base.slint");
+    let input = include_bytes!("../widgets/input/input.slint");
+    let underline_input = include_bytes!("../widgets/input/underline_input.slint");
 
     // build slint path
     let jui_path = jui_path.join("widgets");
-    let mut index_path = jui_path.join("index");
-    let mut test_path = jui_path.join("test");
+    let mut button_path = jui_path.join("button");
+    let mut input_base_path = jui_path.join("input").join("input_base");
+    let mut input_path = jui_path.join("input").join("input");
+    let mut underline_input_path = jui_path.join("input").join("underline_input");
 
     // set suffix
-    index_path.set_extension("slint");
-    test_path.set_extension("slint");
+    button_path.set_extension("slint");
+    input_base_path.set_extension("slint");
+    input_path.set_extension("slint");
+    underline_input_path.set_extension("slint");
 
     // if file exists, remove file
     // if not remove, write file will be fail
-    if index_path.exists() {
-        let _ = fs::remove_file(&index_path);
+    if button_path.exists() {
+        let _ = fs::remove_file(&button_path);
     }
-    if test_path.exists() {
-        let _ = fs::remove_file(&test_path);
+    if input_base_path.exists() {
+        let _ = fs::remove_file(&input_base_path);
+    }
+    if input_path.exists() {
+        let _ = fs::remove_file(&input_path);
+    }
+    if underline_input_path.exists() {
+        let _ = fs::remove_file(&underline_input_path);
     }
 
-    jui_file::try_write_to_file(&index_path, index).expect(&format!("write slint file to {index_path:?} fail"));
-    jui_file::try_write_to_file(&test_path, test).expect(&format!("write slint file to {test_path:?} fail"));
+    jui_file::try_write_to_file(&button_path, button).expect(&format!("write slint file to {button_path:?} fail"));
+    jui_file::try_write_to_file(&input_base_path, input_base).expect(&format!("write slint file to {input_base_path:?} fail"));
+    jui_file::try_write_to_file(&input_path, input).expect(&format!("write slint file to {input_path:?} fail"));
+    jui_file::try_write_to_file(&underline_input_path, underline_input).expect(&format!("write slint file to {underline_input_path:?} fail"));
 }

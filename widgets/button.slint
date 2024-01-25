@@ -1,0 +1,73 @@
+export component Button {
+    in property <string> text: "Button";
+    in property <string> loading_text: "loading...";
+    // default color black
+    in property <brush> color: black;
+    in property <brush> loading_color: gray;
+    // hover color default is color
+    in property <brush> hover_color: color;
+    // default width and height
+    width: txt.preferred-width + 20px;
+    height: txt.preferred-height * 1.33;
+    in property <length> border_width: 1px;
+    in property <length> border_radius: 5px;
+    in property <length> font_size: 14px;
+    in property <MouseCursor> mouse_cursor: pointer;
+    in property <int> font_weight;
+    // button is plain model
+    in property <bool> plain: false;
+    // button is loading
+    in-out property <bool> loading: false;
+
+    // logic color, default is color
+    private property <brush> logic_color: touch.has_hover || focus_scope.has-focus ? hover_color : color;
+
+    callback clicked <=> touch.clicked;
+
+    states [
+        is-loading when loading: {
+            txt.text: loading_text;
+            logic_color: loading_color;
+            touch.enabled: false;
+            focus_scope.enabled: false;
+        }
+    ]
+
+    rect:= Rectangle {
+        border-color: logic_color;
+        border-width: border_width;
+        border-radius: border_radius;
+        width: root.width;
+        height: root.height;
+        background: plain ? logic_color: transparent;
+
+        // button text
+        txt:= Text {
+            text: text;
+            color: plain ? white : logic_color;
+            font-size: font_size;
+            font-weight: font_weight;
+        }
+    }
+
+
+    // support mouse-cursor and mouse click
+    touch:= TouchArea {
+        mouse-cursor: mouse_cursor;
+    }
+
+    // support blank space key and enter key trigger clicked
+    focus_scope:= FocusScope {
+        // don't
+        x: 0;
+        width: 0;
+
+        key-pressed(event) => {
+            if (event.text == " " || event.text == "\n") {
+                touch.clicked();
+                return accept;
+            }
+            return reject;
+        }
+    }
+}
