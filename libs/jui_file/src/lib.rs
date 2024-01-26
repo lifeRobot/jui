@@ -3,6 +3,9 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 use cbsk_base::log;
+pub use write::*;
+
+pub mod write;
 
 /// directory separator
 #[allow(non_upper_case_globals)]
@@ -22,11 +25,6 @@ pub static separator_str: &str = {
 macro_rules! err_log {
     ($f:ident($file:expr),$name:expr) => {
         if let Err(e) = $f($file) {
-            log::error!("{}[{:?}] fail: {e:?}",$name,$file);
-        }
-    };
-    ($f:ident($file:expr,$bytes:expr),$name:expr) => {
-        if let Err(e) = $f($file,$bytes) {
             log::error!("{}[{:?}] fail: {e:?}",$name,$file);
         }
     };
@@ -51,13 +49,15 @@ pub fn try_create_dir(dir: &Path) -> io::Result<()> {
 
 /// create file if does not exists<br />
 /// if create fail, will be call log::error<br />
-/// see [log::error], [try_create_file]
+/// see [log::error], [try_create_file]<br />
+/// if y want to create or open file, see [open_create_file]
 pub fn create_file(file: &Path) {
     err_log!(try_create_file(file),"create file");
 }
 
 /// try create file if does not exists<br />
-/// if file is dir, will be return Err
+/// if file is dir, will be return Err<br />
+/// if y want to create or open file, see [open_create_file]
 pub fn try_create_file(file: &Path) -> io::Result<()> {
     if file.exists() {
         return Ok(());
@@ -87,21 +87,6 @@ fn just_create_dir(dir: &Path) -> io::Result<()> {
     }
 
     just_create_parent_dir(dir)
-}
-
-/// write bytes to file<br />
-/// if file is not exists, will create file and write bytes<br />
-/// if write fail, will be call log::error<br />
-/// see [log::error], [try_write_to_file]
-pub fn write_to_file(path: &Path, bytes: &[u8]) {
-    err_log!(try_write_to_file(path,bytes),"write bytes to file");
-}
-
-/// try write bytes to file<br />
-/// if file is not exists, will create file and write bytes
-pub fn try_write_to_file(path: &Path, bytes: &[u8]) -> io::Result<()> {
-    try_create_dir(path)?;
-    fs::write(path, bytes)
 }
 
 /// read all all to vec<br />
@@ -142,4 +127,24 @@ pub fn try_read_to_str(file: &Path) -> io::Result<String> {
     let mut buf = String::new();
     file.read_to_string(&mut buf)?;
     Ok(buf)
+}
+
+/// will be delete file and create file
+pub fn recreate_file(path: &Path) -> io::Result<File> {
+    if path.exists() {
+        fs::remove_file(path)?;
+    }
+
+    just_create_parent_dir(path)?;
+    File::create(path)
+}
+
+/// open or create file
+pub fn open_create_file(path: &Path) -> io::Result<File> {
+    if path.exists() {
+        return File::options().read(true).write(true).append(true).open(path);
+    }
+
+    just_create_parent_dir(path)?;
+    File::create(path)
 }

@@ -1,5 +1,5 @@
 jui is a ui set based on slint  
-function soon
+function coming soon
 
 ### Supported components
 
@@ -20,7 +20,7 @@ slint = "1.3.2"
 
 [build-dependencies]
 jui_file = "0.1.0"
-jui = "0.1.1"
+jui = "0.1.2"
 ```
 
 main.rs file :
