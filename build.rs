@@ -7,28 +7,30 @@ include!("version.rs");
 /// this build.rs just generate included_library.rs<br />
 /// support automatic import of widgets to slint library path
 pub fn main() {
-    let lib_dir = env::var_os("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR is None");
-    let lib_dir = PathBuf::from(lib_dir);
-    version_file.set(lib_dir.join("version"));// change version file
+    let out_dir = env::var_os("OUT_DIR").expect("OUT_DIR does not exist");
+    let out_dir = PathBuf::from(out_dir).join("jui").join("build");
+    version_file.set(out_dir.join("version"));// change version file
 
     // load and check version
     // if version is not exists or read version fail or ne file_version, generate included_library.rs and lock version
-    not_exists_exec!(return generate_included_library_lock_version(lib_dir));
-    let file_version = read_to_str_fail_exec!(return generate_included_library_lock_version(lib_dir));
-    ne_version_exec!(file_version,return generate_included_library_lock_version(lib_dir));
+    not_exists_exec!(return generate_included_library_lock_version());
+    let file_version = read_to_str_fail_exec!(return generate_included_library_lock_version());
+    ne_version_exec!(file_version,return generate_included_library_lock_version());
 
-    generate_included_library(lib_dir);
+    generate_included_library();
 }
 
 /// generate included_library.rs and lock version
-fn generate_included_library_lock_version(lib_dir: PathBuf) {
-    generate_included_library(lib_dir);
+fn generate_included_library_lock_version() {
+    generate_included_library();
     lock_version();
 }
 
 /// generate included_library.rs
-fn generate_included_library(lib_dir: PathBuf) {
+fn generate_included_library() {
     // build included_library path
+    let lib_dir = env::var_os("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR is None");
+    let lib_dir = PathBuf::from(lib_dir);
     let mut included_library = lib_dir.join("included_library");
     included_library.set_extension("rs");
 
