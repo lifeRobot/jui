@@ -5,7 +5,7 @@ use cbsk_mut_data::mut_data_obj::MutDataObj;
 
 /// lock version
 #[allow(non_upper_case_globals)]
-static version: &str = "0.1.1";
+static version: &str = "0.1.2";
 
 /// version_file, default is PathBuf::new()<br />
 /// need to change it at least once
