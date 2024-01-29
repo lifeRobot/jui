@@ -5,7 +5,7 @@ members = [
 
 [package]
 name = "jui"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 description = "jui is a ui set based on slint"
 readme = "Readme.md"
@@ -18,12 +18,13 @@ repository = "https://github.com/lifeRobot/jui"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cbsk_base = { version = "0.1.5", features = ["once_cell"] }
-cbsk_mut_data = { version = "0.1.3", features = ["obj"] }
 slint-build = "1.3.2"
-jui_file = "0.1.1"
+jui_file = "0.1.2"
 
-[build-dependencies]
-cbsk_base = { version = "0.1.5", features = ["once_cell"] }
-cbsk_mut_data = { version = "0.1.3", features = ["obj"] }
-jui_file = "0.1.1"
+cbsk_base = { version = "0.1.5", optional = true }
+reqwest = { version = "0.11.23", features = ["blocking"], optional = true }
+zip = { version = "0.6.6", optional = true }
+
+[features]
+# support SurrealismUI, you can use @surrealism import
+surrealism_ui = ["reqwest", "cbsk_base/anyhow", "zip"]

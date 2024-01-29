@@ -136,7 +136,7 @@ pub fn recreate_file(path: &Path) -> io::Result<File> {
     }
 
     just_create_parent_dir(path)?;
-    File::create(path)
+    just_create_file(path)
 }
 
 /// open or create file
@@ -146,5 +146,19 @@ pub fn open_create_file(path: &Path) -> io::Result<File> {
     }
 
     just_create_parent_dir(path)?;
-    File::create(path)
+    just_create_file(path)
+}
+
+/// just creating file, not creating directories. will be create fail when directories is not exists<br />
+/// change by File::create method, File::create not read permission<br />
+/// just open file see [just_open_file]
+pub fn just_create_file(path: &Path) -> io::Result<File> {
+    File::options().read(true).write(true).create(true).truncate(true).open(path)
+}
+
+/// just open file, not creating directories. will be create fail when directories is not exists<br /><br />
+/// change by File::open method, File::open not write permission<br />
+/// just create file see [just_create_file]
+pub fn just_open_file(path: &Path) -> io::Result<File> {
+    File::options().read(true).write(true).append(true).open(path)
 }
