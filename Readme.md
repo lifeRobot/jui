@@ -1,5 +1,5 @@
 jui is a ui set based on slint  
-[SurrealismUI](https://github.com/Surrealism-All/SurrealismUI) is already supported
+[SurrealismUI](https://github.com/Surrealism-All/SurrealismUI) is already supported  
 more function coming soon
 
 ### Supported components
@@ -20,7 +20,7 @@ features enable surrealism_ui, Cargo.toml file like example:
 slint = "1.3.2"
 
 [build-dependencies]
-jui = { version = "0.1.3", features = ["surrealism_ui"] }
+jui = { version = "0.1.4", features = ["surrealism_ui"] }
 ```
 
 use SurrealismUI in you slint file:
@@ -45,7 +45,7 @@ use jui::surrealism_ui::SurrealismUI;
 
 pub fn main() {
     let separator = jui::jui_file::separator;
-    let surrealism_ui = SurrealismUI { alias: "sui".into(), ..Default::default() };
+    let surrealism_ui = SurrealismUI::new_with_alias("sui");
     jui::compile_with_surrealism_ui(format!("view{separator}main.slint"), surrealism_ui).unwrap();
 }
 ```
@@ -59,7 +59,7 @@ Cargo.toml file :
 slint = "1.3.2"
 
 [build-dependencies]
-jui = "0.1.3"
+jui = "0.1.4"
 ```
 
 main.rs file :
