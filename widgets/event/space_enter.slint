@@ -1,0 +1,16 @@
+// support space or enter event
+export component SpaceEnter inherits FocusScope {
+    x: 0;
+    width: 0;// Do not react on clicks
+
+    // space or enter event
+    callback clicked;
+
+    key-pressed(event) => {
+        if (event.text == " " || event.text == "\n") {
+            root.clicked();
+            return accept;
+        }
+        return reject;
+    }
+}

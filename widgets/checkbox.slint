@@ -1,0 +1,71 @@
+import { TouchSpaceEnter } from "event/touch_space_enter.slint";
+
+export component CheckBox {
+    // default text is checkbox, if you want text is empty, please set text: "";
+    in property <string> text: "checkbox";
+    in property <length> font_size: 14px;
+    in property <brush> color: black;
+    // check_color default color
+    in property <brush> check_color: color;
+    in property <length> border_radius: 3px;
+    in-out property <MouseCursor> mouse_cursor: MouseCursor.pointer;
+    in property <bool> enabled: true;
+    in property <bool> has_focus;
+    in-out property <bool> checked;
+
+    private property <brush> logic_color: checked ? check_color : color;
+
+    callback toggled;
+
+    states [
+        hover when enabled && (touch.has_hover || touch.has_focus) : {
+            logic_color: check_color;
+        }
+        disabled when !enabled: {
+            layout.opacity: 0.5;
+            mouse_cursor: MouseCursor.no_drop;
+            touch.space_enter_enabled: false;
+        }
+    ]
+
+    layout:= HorizontalLayout {
+        spacing: 5px;
+
+        Rectangle {
+            width: font_size;
+            height: self.width;
+            y: max((parent.height - self.height) / 2, 3px);
+            border-width: 1px;
+            border-color: logic_color;
+            border-radius: border_radius;
+            background: checked ? check_color: transparent;
+
+            if (checked): Image {
+                x: 2px;
+                width: font_size - 3px;
+                source: @image-url("icons/check_mark.svg");
+                colorize: transparent;
+            }
+        }
+
+        Text {
+            text: text;
+            font-size: font_size;
+            color: logic_color;
+            vertical-alignment: center;
+            horizontal-alignment: left;
+        }
+    }
+
+    // support toggled and mouse cursor
+    touch:= TouchSpaceEnter {
+        mouse-cursor: mouse_cursor;
+
+        clicked => {
+            if(root.enabled){
+                root.checked = !root.checked;
+                root.toggled();
+            }
+        }
+    }
+}

@@ -4,12 +4,15 @@ more function coming soon
 
 ### Supported components
 
-| name           | import example                                                           |
-|----------------|--------------------------------------------------------------------------|
-| Button         | ```import { Button } from "@jui/button.slint";```                        |
-| InputBase      | ```import { InputBase } from "@jui/input/input_base.slint";```           |
-| Input          | ```import { Input } from "@jui/input/input.slint";```                    |
-| UnderlineInput | ```import { UnderlineInput } from "@jui/input/underline_input.slint";``` |
+| name            | import example                                                             |
+|-----------------|----------------------------------------------------------------------------|
+| Button          | ```import { Button } from "@jui/button.slint";```                          |
+| InputBase       | ```import { InputBase } from "@jui/input/input_base.slint";```             |
+| Input           | ```import { Input } from "@jui/input/input.slint";```                      |
+| UnderlineInput  | ```import { UnderlineInput } from "@jui/input/underline_input.slint";```   |
+| CheckBox        | ```import { CheckBox } from "@jui/checkbox.slint";```                      |
+| SpaceEnter      | ```import { SpaceEnter } from "@jui/event/space_enter.slint";```           |
+| TouchSpaceEnter | ```import { TouchSpaceEnter } from "@jui/event/touch_space_enter.slint";``` |
 
 ### [SurrealismUI](https://github.com/Surrealism-All/SurrealismUI) example
 
@@ -20,7 +23,7 @@ features enable surrealism_ui, Cargo.toml file like example:
 slint = "1.3.2"
 
 [build-dependencies]
-jui = { version = "0.1.4", features = ["surrealism_ui"] }
+jui = { version = "0.1.5", features = ["surrealism_ui"] }
 ```
 
 use SurrealismUI in you slint file:
@@ -59,7 +62,7 @@ Cargo.toml file :
 slint = "1.3.2"
 
 [build-dependencies]
-jui = "0.1.4"
+jui = "0.1.5"
 ```
 
 main.rs file :
