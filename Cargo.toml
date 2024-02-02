@@ -5,7 +5,7 @@ members = [
 
 [package]
 name = "jui"
-version = "0.1.5"
+version = "0.1.6"
 edition = "2021"
 description = "jui is a ui set based on slint"
 readme = "Readme.md"
@@ -18,11 +18,11 @@ repository = "https://github.com/lifeRobot/jui"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-slint-build = "1.3.2"
+slint-build = "1.4.0"
 jui_file = "0.1.2"
 
 cbsk_base = { version = "0.1.5", optional = true }
-reqwest = { version = "0.11.23", features = ["blocking"], optional = true }
+reqwest = { version = "0.11.24", features = ["blocking"], optional = true }
 zip = { version = "0.6.6", optional = true }
 
 [features]
