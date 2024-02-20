@@ -1,0 +1,79 @@
+component Handle inherits Rectangle {
+    in property <string> text <=> txt.text;
+    in property <brush> text_color: white;
+    in property <bool> show: true;
+    in property <length> font_size <=> txt.font_size;
+
+    callback clicked <=> touch.clicked;
+
+    states [
+        not_show when !show: {
+            img.rotation-angle: -90deg;
+            img.y: txt.font_size / 2 - 2px;
+        }
+    ]
+
+    img:= Image {
+        x: 10px;
+        y: txt.font_size / 2;
+        source: @image-url("../icons/dropdown.svg");
+        colorize: text_color;
+        width: txt.font_size - 2px;
+
+        animate rotation-angle,y {
+             duration: 500ms;
+        }
+    }
+
+    txt:= Text {
+        x: img.width + 15px;
+        color: text_color;
+    }
+
+    touch:= TouchArea {
+        mouse-cursor: pointer;
+    }
+}
+
+export component Collapse {
+    in-out property <bool> show: true;
+    in property <string> title: "collapse title";
+    in property <length> title_size: 18px;
+    in property <brush> title_color: white;
+    private property <length> logic_height;
+    width: 100%;
+
+    animate height {
+         duration: 500ms;
+    }
+
+    Rectangle {
+        handle:= Handle {
+            y: 0px;
+            height: 30px;
+            text: title;
+            font_size: title_size;
+            text_color: title_color;
+            show: show;
+            clicked => {
+                show = !show;
+                root.height = show ? logic_height : handle.height;
+                cont.height = show ? logic_height - handle.height : 0;
+            }
+        }
+        cont:= Rectangle {
+            y: handle.height;
+            height: root.height - handle.height;
+
+            init => {
+                logic_height = root.height;
+            }
+
+            animate height {
+                 duration: 500ms;
+            }
+
+            @children
+        }
+    }
+}
