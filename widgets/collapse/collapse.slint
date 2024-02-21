@@ -36,11 +36,13 @@ component Handle inherits Rectangle {
 }
 
 export component Collapse {
-    in-out property <bool> show: true;
+    in-out property <bool> show: false;
     in property <string> title: "collapse title";
     in property <length> title_size: 18px;
     in property <brush> title_color: white;
+
     private property <length> logic_height;
+
     width: 100%;
 
     animate height {
@@ -57,16 +59,17 @@ export component Collapse {
             show: show;
             clicked => {
                 show = !show;
-                root.height = show ? logic_height : handle.height;
-                cont.height = show ? logic_height - handle.height : 0;
+                change_height();
             }
         }
         cont:= Rectangle {
             y: handle.height;
-            height: root.height - handle.height;
+            height: 0;
+            clip: true;
 
             init => {
                 logic_height = root.height;
+                change_height();
             }
 
             animate height {
@@ -75,5 +78,11 @@ export component Collapse {
 
             @children
         }
+    }
+
+    // change the length based on the show parameter
+    function change_height() {
+        root.height = show ? logic_height : handle.height;
+        cont.height = show ? logic_height - handle.height : 0;
     }
 }
