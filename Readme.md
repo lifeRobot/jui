@@ -14,6 +14,7 @@ more function coming soon
 | SpaceEnter      | ```import { SpaceEnter } from "@jui/event/space_enter.slint";```            |
 | TouchSpaceEnter | ```import { TouchSpaceEnter } from "@jui/event/touch_space_enter.slint";``` |
 | Collapse        | ```import { Collapse } from "@jui/collapse/collapse.slint";```              |
+| Confirm         | ```import { Confirm } from "@jui/message/confirm.slint";```                 |
 
 ### [SurrealismUI](https://github.com/Surrealism-All/SurrealismUI) example
 
@@ -24,7 +25,7 @@ features enable surrealism_ui, Cargo.toml file like example:
 slint = "1.4.1"
 
 [build-dependencies]
-jui = { version = "0.1.8", features = ["surrealism_ui"] }
+jui = { version = "0.1.9", features = ["surrealism_ui"] }
 ```
 
 use SurrealismUI in you slint file:
@@ -63,7 +64,7 @@ Cargo.toml file :
 slint = "1.4.1"
 
 [build-dependencies]
-jui = "0.1.8"
+jui = "0.1.9"
 ```
 
 main.rs file :

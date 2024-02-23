@@ -1,10 +1,136 @@
-export component Confirm inherits PopupWindow {
+import { Button } from "../button.slint";
+
+// confirm button property
+export struct ConfirmButtonData {
+    color:brush,
+    text:string,
+    plain:bool,
+}
+
+// confirm title property
+export struct ConfirmTitleData {
+    title:string,
+    color:brush,
+    font_size:length,
+}
+
+// confirm property
+export struct ConfirmData {
+    button_confirm:ConfirmButtonData,
+    button_cancel:ConfirmButtonData,
+    title:ConfirmTitleData,
+}
+
+component ConfirmButton inherits Button {
+    in property <ConfirmButtonData> data;
+    color:data.color;
+    text:data.text;
+    plain:data.plain;
+    height: 28px;
+}
+
+component ConfirmTitle inherits Text{
+    in property <ConfirmTitleData> data;
     x: 0;
     y: 0;
-    width: 100%;
-    height: 100%;
+    text:data.title;
+    color: data.color;
+    font-size: data.font_size;
+}
+
+component ConfirmContent inherits Rectangle {
+    in property <ConfirmButtonData> button_confirm;
+    in property <ConfirmButtonData> button_cancel;
+    in property <ConfirmTitleData> title_data;
+
+    // if return true, confirm component will be call close()
+    // if return false, confirm will be keep show
+    callback confirm();
+    callback cancel();
 
     Rectangle {
-        // coming soon
+        x: 8px;
+        y: 8px;
+        width: root.width - 16px;
+        height: root.height - 16px;
+
+        title:= ConfirmTitle {data: title_data;}
+        cont:= Rectangle {
+            x: 0;
+            y: title.height + 8px;
+            width: root.width - 16px;
+            height: root.height - title.height - btn.height - 32px;
+            @children
+        }
+        btn:= HorizontalLayout {
+            y: cont.y + cont.height + 8px;
+            height: 30px;
+            alignment: end;
+            spacing: 8px;
+
+            ConfirmButton {
+                data: button_cancel;
+                clicked => {cancel();}
+            }
+
+            ConfirmButton {
+                data: button_confirm;
+                clicked => {confirm();}
+            }
+        }
+    }
+}
+
+export component Confirm {
+    in property <ConfirmButtonData> button_confirm:{color:Colors.deepskyblue,text:"confirm",plain:true};
+    in property <ConfirmButtonData> button_cancel: {color:Colors.gray,text:"cancel",plain:false};
+    in property <ConfirmTitleData> title_data:{title:"confirm",font_size:14px,color:Colors.black};
+    in property <brush> background:white;
+
+    // default width and height
+    width: 300px;
+    height: 150px;
+
+    // if return true, confirm component will be call close()
+    // if return false, confirm will be keep show
+    callback confirm() -> bool;
+    callback cancel() -> bool;
+    // callback default true
+    confirm => {true}
+    cancel => { true }
+
+    public function show() {
+        popup.show();
+    }
+    public function close() {
+        popup.close();
+    }
+
+    popup:= PopupWindow {
+        x: 0;
+        y: 0;
+        close-on-click: false;
+        width: 100%;
+        height: 100%;
+
+        ConfirmContent {
+            button_confirm: button_confirm;
+            button_cancel: button_cancel;
+            title_data: title_data;
+            width: root.width;
+            height: root.height;
+            background: root.background;
+
+            confirm => {is_close(confirm());}
+            cancel => {is_close(cancel());}
+
+            @children
+        }
+    }
+
+    function is_close(popup_close:bool) {
+        if (popup_close) {
+            popup.close()
+        }
     }
 }

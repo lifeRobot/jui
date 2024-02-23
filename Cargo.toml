@@ -5,7 +5,7 @@ members = [
 
 [package]
 name = "jui"
-version = "0.1.8"
+version = "0.1.9"
 edition = "2021"
 description = "jui is a ui set based on slint"
 readme = "Readme.md"
