@@ -86,6 +86,8 @@ export component Confirm {
     in property <ConfirmButtonData> button_cancel: {color:Colors.gray,text:"cancel",plain:false};
     in property <ConfirmTitleData> title_data:{title:"confirm",font_size:14px,color:Colors.black};
     in property <brush> background:white;
+    // border_radius default 5px
+    in property <length> border_radius: 5px;
 
     // default width and height
     width: 300px;
@@ -110,8 +112,8 @@ export component Confirm {
         x: 0;
         y: 0;
         close-on-click: false;
-        width: 100%;
-        height: 100%;
+        width: root.width;
+        height: root.height;
 
         ConfirmContent {
             button_confirm: button_confirm;
@@ -120,6 +122,7 @@ export component Confirm {
             width: root.width;
             height: root.height;
             background: root.background;
+            border-radius: border_radius;
 
             confirm => {is_close(confirm());}
             cancel => {is_close(cancel());}
