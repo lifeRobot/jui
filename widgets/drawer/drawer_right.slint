@@ -1,0 +1,54 @@
+import { DrawerCommon } from "drawer_common.slint";
+
+export component DrawerRight inherits DrawerCommon {
+    private property <length> logic_width;
+    private property <length> logic_x;
+    height: 100%;
+
+    cont:= Rectangle {
+        background: root.background;
+        clip: true;
+
+        animate width {
+             duration: 300ms;
+        }
+
+        init => {
+            logic_width = root.width;
+            logic_x = root.x;
+            change_width();
+        }
+
+        @children
+    }
+
+    public function open() {
+        change_show(true);
+    }
+
+    public function close() {
+        change_show(false);
+    }
+
+    public function toggle() {
+        change_show(!root.show);
+    }
+
+    public function change_show(show:bool) {
+        root.show = show;
+        change_width();
+    }
+
+    function change_width() {
+        if root.show {
+            root.width = logic_width;
+            cont.width = logic_width;
+            root.x = logic_x;
+            return;
+        }
+
+        root.width = 0;
+        cont.width = 0;
+        root.x = logic_x + logic_width;
+    }
+}

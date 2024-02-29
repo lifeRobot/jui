@@ -9,13 +9,13 @@ component Handle inherits Rectangle {
     states [
         not_show when !show: {
             img.rotation-angle: -90deg;
-            img.y: txt.font_size / 2 - 2px;
+            img.y: txt.font_size / 2;
         }
     ]
 
     img:= Image {
         x: 10px;
-        y: txt.font_size / 2;
+        y: txt.font_size / 2 + 3px;
         source: @image-url("../icons/dropdown.svg");
         colorize: text_color;
         width: txt.font_size - 2px;
@@ -82,7 +82,13 @@ export component Collapse {
 
     // change the length based on the show parameter
     function change_height() {
-        root.height = show ? logic_height : handle.height;
-        cont.height = show ? logic_height - handle.height : 0;
+        if show {
+            root.height = logic_height;
+             cont.height = logic_height - handle.height;
+            return;
+        }
+
+        root.height = handle.height;
+        cont.height = 0;
     }
 }

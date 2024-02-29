@@ -1,0 +1,148 @@
+import { Position } from "../data/position.slint";
+import { DrawerCommon } from "drawer_common.slint";
+
+export { Position }
+
+export component Drawer inherits DrawerCommon{
+    // position default is left
+    in property <Position> position: Position.Left;
+
+    // Slint currently does not support the writing of multiple @children
+    /*if position == Position.Top: DrawerTop {
+        @children
+    }
+    if position == Position.Left: DrawerLeft {
+        @children
+    }
+    if position == Position.Right: DrawerRight {
+        @children
+    }
+    if position == Position.Bottom: DrawerBottom {
+        @children
+    }*/
+
+    private property <length> logic_width;
+    private property <length> logic_height;
+    private property <length> logic_x;
+    private property <length> logic_y;
+
+    cont:= Rectangle {
+        background: root.background;
+        clip: true;
+
+        animate width,height {
+             duration: 300ms;
+        }
+
+        init => {
+            logic_width = root.width;
+            logic_height = root.height;
+            logic_x = root.x;
+            logic_y = root.y;
+            change_rect();
+        }
+
+        @children
+    }
+
+    public function open() {
+        change_show(true);
+    }
+
+    public function close() {
+        change_show(false);
+    }
+
+    public function toggle() {
+        change_show(!root.show);
+    }
+
+    public function change_show(show:bool) {
+        root.show = show;
+        change_rect();
+    }
+
+    function change_rect() {
+        if root.show {
+            if position == Position.Top {
+                open_top();
+                return;
+            }
+            if position == Position.Left {
+                open_left();
+                return;
+            }
+            if position == Position.Right {
+                open_right();
+                return;
+            }
+            if position == Position.Bottom {
+                open_bottom();
+                return;
+            }
+        }
+
+        // show is false logic
+        if position == Position.Top {
+            close_top();
+            return;
+        }
+        if position == Position.Left {
+            close_left();
+            return;
+        }
+        if position == Position.Right {
+            close_right();
+            return;
+        }
+
+        // default close bottom
+        close_bottom();
+    }
+
+    function open_top() {
+        change_height(logic_height);
+    }
+
+    function open_left() {
+        change_width(logic_width);
+    }
+
+    function open_right() {
+        open_left();
+        root.x = logic_x;
+    }
+
+    function open_bottom() {
+        open_top();
+        root.y = logic_y;
+    }
+
+    function close_top() {
+        change_height(0);
+    }
+
+    function close_left() {
+        change_width(0);
+    }
+
+    function close_right() {
+        close_left();
+        root.x = logic_x + logic_width;
+    }
+
+    function close_bottom() {
+        close_top();
+        root.y = logic_y + logic_height;
+    }
+
+    function change_width(width:length) {
+        root.width = width;
+        cont.width = width;
+    }
+
+    function change_height(height:length) {
+        root.height = height;
+        cont.height = height;
+    }
+}

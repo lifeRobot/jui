@@ -15,6 +15,13 @@ more function coming soon
 | TouchSpaceEnter | ```import { TouchSpaceEnter } from "@jui/event/touch_space_enter.slint";``` |
 | Collapse        | ```import { Collapse } from "@jui/collapse/collapse.slint";```              |
 | Confirm         | ```import { Confirm } from "@jui/message/confirm.slint";```                 |
+| DrawerCommon    | ```import { DrawerCommon } from "@jui/drawer/drawer_common.slint";```       |
+| Drawer          | ```import { Drawer } from "@jui/drawer/drawer.slint";```                    |
+| DrawerTop       | ```import { DrawerTop } from "@jui/drawer/drawer_top.slint";```             |
+| DrawerLeft      | ```import { DrawerLeft } from "@jui/drawer/drawer_left.slint";```           |
+| DrawerRight     | ```import { DrawerRight } from "@jui/drawer/drawer_right.slint";```         |
+| DrawerBottom    | ```import { DrawerBottom } from "@jui/drawer/drawer_bottom.slint";```       |
+| Position        | ```import { Position } from "@jui/data/position.slint";```                  |
 
 ### [SurrealismUI](https://github.com/Surrealism-All/SurrealismUI) example
 
@@ -25,7 +32,7 @@ features enable surrealism_ui, Cargo.toml file like example:
 slint = "1.4.1"
 
 [build-dependencies]
-jui = { version = "0.1.10", features = ["surrealism_ui"] }
+jui = { version = "0.1.11", features = ["surrealism_ui"] }
 ```
 
 use SurrealismUI in you slint file:
@@ -64,7 +71,7 @@ Cargo.toml file :
 slint = "1.4.1"
 
 [build-dependencies]
-jui = "0.1.10"
+jui = "0.1.11"
 ```
 
 main.rs file :
