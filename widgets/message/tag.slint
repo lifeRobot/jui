@@ -1,0 +1,30 @@
+
+export component Tag {
+    in property <string> text: "tag";
+    in property <brush> background: white;
+    in property <brush> color: black;
+    in property <length> font_size: 14px;
+    in property <brush> close_color: gray;
+
+    width: 100%;
+    height: font_size + 16px;
+
+    callback close <=> touch.clicked;
+
+    Rectangle {
+        background: background;
+
+        Text {x: 8px;y: 8px;text: text;color: color;font-size: font_size;}
+
+        Image {
+            x: root.width - self.width - 8px;
+            y: 8px;
+            source: @image-url("../icons/close.svg");
+            colorize: close_color;
+            width: font_size;
+            touch:= TouchArea {
+                mouse-cursor: pointer;
+            }
+        }
+    }
+}

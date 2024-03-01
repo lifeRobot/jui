@@ -15,13 +15,20 @@ more function coming soon
 | TouchSpaceEnter | ```import { TouchSpaceEnter } from "@jui/event/touch_space_enter.slint";``` |
 | Collapse        | ```import { Collapse } from "@jui/collapse/collapse.slint";```              |
 | Confirm         | ```import { Confirm } from "@jui/message/confirm.slint";```                 |
+| Tag             | ```import { Tag } from "@jui/message/tag.slint";```                         |
+| Mask            | ```import { Mask } from "@jui/message/mask.slint";```                       |
 | DrawerCommon    | ```import { DrawerCommon } from "@jui/drawer/drawer_common.slint";```       |
 | Drawer          | ```import { Drawer } from "@jui/drawer/drawer.slint";```                    |
 | DrawerTop       | ```import { DrawerTop } from "@jui/drawer/drawer_top.slint";```             |
 | DrawerLeft      | ```import { DrawerLeft } from "@jui/drawer/drawer_left.slint";```           |
 | DrawerRight     | ```import { DrawerRight } from "@jui/drawer/drawer_right.slint";```         |
 | DrawerBottom    | ```import { DrawerBottom } from "@jui/drawer/drawer_bottom.slint";```       |
-| Position        | ```import { Position } from "@jui/data/position.slint";```                  |
+
+### Supported data
+
+| nane     | import example                                             |
+|----------|------------------------------------------------------------|
+| Position | ```import { Position } from "@jui/data/position.slint";``` |
 
 ### [SurrealismUI](https://github.com/Surrealism-All/SurrealismUI) example
 
