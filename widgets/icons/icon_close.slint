@@ -1,0 +1,8 @@
+export component IconClose inherits Image {
+    in property <MouseCursor> mouse_cursor <=> touch.mouse_cursor;
+    callback clicked <=> touch.clicked;
+
+    source: @image-url("close.svg");
+
+    touch:= TouchArea {}
+}

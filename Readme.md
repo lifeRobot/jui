@@ -23,12 +23,23 @@ more function coming soon
 | DrawerLeft      | ```import { DrawerLeft } from "@jui/drawer/drawer_left.slint";```           |
 | DrawerRight     | ```import { DrawerRight } from "@jui/drawer/drawer_right.slint";```         |
 | DrawerBottom    | ```import { DrawerBottom } from "@jui/drawer/drawer_bottom.slint";```       |
+| Tabs            | ```import { Tabs } from "@jui/nav/tabs.slint";```                           |
 
 ### Supported data
 
-| nane     | import example                                             |
-|----------|------------------------------------------------------------|
-| Position | ```import { Position } from "@jui/data/position.slint";``` |
+| nane              | import example                                                        |
+|-------------------|-----------------------------------------------------------------------|
+| Position          | ```import { Position } from "@jui/data/position.slint";```            |
+| TabsData          | ```import { TabsData } from "@jui/nav/tabs.slint";```                 |
+| ConfirmData       | ```import { ConfirmData } from "@jui/message/confirm.slint";```       |
+| ConfirmTitleData  | ```import { ConfirmTitleData } from "@jui/message/confirm.slint";```  |
+| ConfirmButtonData | ```import { ConfirmButtonData } from "@jui/message/confirm.slint";``` |
+
+### Supported icons
+
+| nane      | import example                                                 |
+|-----------|----------------------------------------------------------------|
+| IconClose | ```import { IconClose } from "@jui/icons/icon_close.slint";``` |
 
 ### [SurrealismUI](https://github.com/Surrealism-All/SurrealismUI) example
 
@@ -39,7 +50,7 @@ features enable surrealism_ui, Cargo.toml file like example:
 slint = "1.4.1"
 
 [build-dependencies]
-jui = { version = "0.1.12", features = ["surrealism_ui"] }
+jui = { version = "0.1.13", features = ["surrealism_ui"] }
 ```
 
 use SurrealismUI in you slint file:
@@ -78,7 +89,7 @@ Cargo.toml file :
 slint = "1.4.1"
 
 [build-dependencies]
-jui = "0.1.12"
+jui = "0.1.13"
 ```
 
 main.rs file :

@@ -1,0 +1,57 @@
+export struct TabsData {
+    id: string,
+    text: string,
+}
+
+export component Tabs {
+    // now selected id, default is data[0].id
+    in-out property <string> id: data[0].id;
+    in property <[TabsData]> data;
+    in property <length> font_size: 14px;
+    in property <brush> color: black;
+    in property <length> spacing: 8px;
+    in property <MouseCursor> mouse_cursor: pointer;
+    in property <brush> active_color: deepskyblue;
+
+    callback clicked(TabsData);
+
+    // line default width
+    txt:= Text {text:data[0].text;font_size: font_size;visible: false;}
+
+    cont:= HorizontalLayout {
+        alignment: start;
+        spacing: spacing;
+
+        for tab in data: rect:= Rectangle {
+            Text {
+                text: tab.text;
+                color: id == tab.id ? active_color : color;
+                font_size: font_size;
+            }
+
+            TouchArea {
+                mouse-cursor: mouse_cursor;
+
+                clicked => {
+                    id = tab.id;
+                    line.x = rect.x;
+                    line.width = rect.width;
+                    clicked(tab);
+                }
+            }
+        }
+
+    }
+
+    line:= Rectangle {
+        x: 0px;
+        y: cont.height + 5px;
+        width: txt.width;
+        height: 2px;
+        background: active_color;
+
+        animate x,width {
+             duration: 300ms;
+        }
+    }
+}

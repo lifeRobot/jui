@@ -1,3 +1,4 @@
+import { IconClose } from "../icons/icon_close.slint";
 
 export component Tag {
     in property <string> text: "tag";
@@ -9,22 +10,19 @@ export component Tag {
     width: 100%;
     height: font_size + 16px;
 
-    callback close <=> touch.clicked;
+    callback close <=> close.clicked;
 
     Rectangle {
         background: background;
 
         Text {x: 8px;y: 8px;text: text;color: color;font-size: font_size;}
 
-        Image {
+        close:= IconClose {
             x: root.width - self.width - 8px;
             y: 8px;
-            source: @image-url("../icons/close.svg");
-            colorize: close_color;
             width: font_size;
-            touch:= TouchArea {
-                mouse-cursor: pointer;
-            }
+            colorize: close_color;
+            mouse_cursor: pointer;
         }
     }
 }
