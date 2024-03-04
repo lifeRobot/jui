@@ -29,6 +29,7 @@ export component UnderlineInput {
     callback edited <=> input.edited;
 
     forward-focus: input;
+    height: input.height;
 
     private property <brush> logic_color: input.has_focus || touch.has_hover ? hover_color : underline_color;
 
@@ -37,16 +38,19 @@ export component UnderlineInput {
         verify_fail when !verify: {
             logic_color: red;
         }
+        clicked when input.has_focus: {
+            touch.visible: false;
+        }
     ]
 
     Rectangle {
         input:= Input {
+            y: 0;
             width: parent.width;
             placeholder_color: placeholder_color;
         }
-
-        underline:= Rectangle {
-            y: parent.height;
+        Rectangle {
+            y: root.height;
             width: input.width + 20px;
             height: 1px;
             background: logic_color;
@@ -56,6 +60,7 @@ export component UnderlineInput {
     // mouse hover attr and etc
     touch:= TouchArea {
         mouse-cursor: mouse_cursor;
+        visible: true;
 
         clicked => {
             input.focus();

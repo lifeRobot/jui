@@ -44,7 +44,7 @@ export component InputBase {
 
             x: min(0px, max(parent.width - self.width - self.text-cursor-width, self.computed-x));
             width: max(parent.width - self.text-cursor-width, self.preferred-width);
-            height: 100%;
+            height: max(root.height,self.font_size + 8px);
             vertical-alignment: center;
             single-line: true;
             color: color;
