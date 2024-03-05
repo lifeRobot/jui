@@ -1,0 +1,64 @@
+export component ButtonBase {
+    // enabled default true
+    in property <bool> enabled: true;
+    // default text is Button, if you want text is empty, please set text: "";
+    in property <string> text: "Button";
+    // default loading_text is loading..., if you want text is empty, please set loading_text: "";
+    in property <string> loading_text: "loading...";
+    // default color black
+    in property <brush> color: black;
+    in property <brush> loading_color: gray;
+    // hover color default is color
+    in property <brush> hover_color: color;
+    in property <length> border_width: 1px;
+    in property <length> border_radius: 5px;
+    in property <length> font_size: 14px;
+    in-out property <MouseCursor> mouse_cursor: pointer;
+    in property <int> font_weight;
+    // button is plain model
+    in property <bool> plain: false;
+    // button is loading
+    in-out property <bool> loading: false;
+
+    // logic color, default is color
+    in-out property <brush> logic_color: enabled ? hover_color : color;
+
+    // default width and height
+    width: txt.preferred-width + 20px;
+    height: txt.preferred-height * 1.33;
+
+    states [
+        is-loading when loading: {
+            txt.text: loading_text;
+            logic_color: loading_color;
+            mouse_cursor: MouseCursor.no_drop;
+        }
+        disabled when !enabled: {
+            rect.opacity: 0.5;
+            mouse_cursor: MouseCursor.no_drop;
+        }
+    ]
+
+    rect:= Rectangle {
+        border-color: logic_color;
+        border-width: border_width;
+        border-radius: border_radius;
+        width: root.width;
+        height: root.height;
+        background: plain ? logic_color: transparent;
+
+        // button text
+        txt:= Text {
+            // if [root.height - font_size < 0], y default 0
+            // If y is not set, the font will not be centered.
+            // I think this is caused by the built-in padding or margin properties in the Text component
+            y: max((root.height - font_size) / 2 - 2px, 0);
+            text: text;
+            color: plain ? white : logic_color;
+            font-size: font_size;
+            font-weight: font_weight;
+        }
+
+        @children
+    }
+}

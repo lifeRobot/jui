@@ -1,0 +1,62 @@
+import { TouchSpaceEnter } from "../event/touch_space_enter.slint";
+import { ButtonOptBase } from "button_opt_base.slint";
+
+export struct ButtonOptData {
+    id: string,
+    text: string,
+    checked: bool,
+}
+
+// base button opt
+component ButtonOpt inherits ButtonOptBase {
+    logic_color: root.enabled && (root.checked || touch.has_hover || touch.has_focus) ? root.hover_color : root.color;
+
+    callback clicked;
+
+    // support toggled and mouse cursor
+    touch:= TouchSpaceEnter {
+        mouse-cursor: root.mouse_cursor;
+
+        clicked => {
+            if (root.enabled) {
+                root.clicked();
+            }
+        }
+    }
+}
+
+export component ButtonOptList {
+    // default selected id, used for multiple=false
+    in-out property <string> id: data[0].id;
+    in property <[ButtonOptData]> data;
+    in property <brush> color: black;
+    in property <brush> hover_color: color;
+    in property <bool> plain: true;
+    in property <length> font_size: 14px;
+    in property <bool> multiple: false;
+    in property <length> spacing: 8px;
+
+    callback clicked(ButtonOptData);
+
+    HorizontalLayout {
+        alignment: start;
+        spacing: spacing;
+
+        for opt[i] in data: ButtonOpt {
+            text: opt.text;
+            checked: multiple ? opt.checked : opt.id == id;
+            color: color;
+            hover_color: hover_color;
+            plain: plain;
+            font_size: font_size;
+
+            clicked => {
+                id = opt.id;
+                if multiple {
+                    opt.checked = !opt.checked;
+                }
+                clicked(opt);
+            }
+        }
+    }
+}

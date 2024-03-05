@@ -1,0 +1,14 @@
+import { ButtonBase } from "button_base.slint";
+
+export component ButtonOptBase inherits ButtonBase {
+    in-out property <bool> checked: true;
+    plain: true;
+
+    if checked: Image {
+        width: max(14px,min(root.width,root.height) * 0.1);
+        x: root.width - self.width;
+        y: root.height - self.height;
+        source: @image-url("../icons/check_mark.svg");
+        colorize: root.plain ? transparent : root.logic_color;
+    }
+}

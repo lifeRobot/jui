@@ -6,7 +6,11 @@ more function coming soon
 
 | name            | import example                                                              |
 |-----------------|-----------------------------------------------------------------------------|
-| Button          | ```import { Button } from "@jui/button.slint";```                           |
+| Button          | ```import { Button } from "@jui/button/button.slint";```                    |
+| ButtonBase      | ```import { ButtonBase } from "@jui/button/button_base.slint";```           |
+| ButtonOpt       | ```import { ButtonBase } from "@jui/button/button_opt.slint";```            |
+| ButtonOptBase   | ```import { ButtonOptBase } from "@jui/button/button_opt_base.slint";```    |
+| ButtonOptList   | ```import { ButtonOptList } from "@jui/button/button_opt_list.slint";```    |
 | InputBase       | ```import { InputBase } from "@jui/input/input_base.slint";```              |
 | Input           | ```import { Input } from "@jui/input/input.slint";```                       |
 | UnderlineInput  | ```import { UnderlineInput } from "@jui/input/underline_input.slint";```    |
@@ -27,13 +31,14 @@ more function coming soon
 
 ### Supported data
 
-| nane              | import example                                                        |
-|-------------------|-----------------------------------------------------------------------|
-| Position          | ```import { Position } from "@jui/data/position.slint";```            |
-| TabsData          | ```import { TabsData } from "@jui/nav/tabs.slint";```                 |
-| ConfirmData       | ```import { ConfirmData } from "@jui/message/confirm.slint";```       |
-| ConfirmTitleData  | ```import { ConfirmTitleData } from "@jui/message/confirm.slint";```  |
-| ConfirmButtonData | ```import { ConfirmButtonData } from "@jui/message/confirm.slint";``` |
+| nane              | import example                                                           |
+|-------------------|--------------------------------------------------------------------------|
+| Position          | ```import { Position } from "@jui/data/position.slint";```               |
+| ButtonOptData     | ```import { ButtonOptData } from "@jui/button/button_opt_list.slint";``` |
+| TabsData          | ```import { TabsData } from "@jui/nav/tabs.slint";```                    |
+| ConfirmData       | ```import { ConfirmData } from "@jui/message/confirm.slint";```          |
+| ConfirmTitleData  | ```import { ConfirmTitleData } from "@jui/message/confirm.slint";```     |
+| ConfirmButtonData | ```import { ConfirmButtonData } from "@jui/message/confirm.slint";```    |
 
 ### Supported icons
 
@@ -50,7 +55,7 @@ features enable surrealism_ui, Cargo.toml file like example:
 slint = "1.4.1"
 
 [build-dependencies]
-jui = { version = "0.1.14", features = ["surrealism_ui"] }
+jui = { version = "0.1.15", features = ["surrealism_ui"] }
 ```
 
 use SurrealismUI in you slint file:
@@ -89,7 +94,7 @@ Cargo.toml file :
 slint = "1.4.1"
 
 [build-dependencies]
-jui = "0.1.14"
+jui = "0.1.15"
 ```
 
 main.rs file :

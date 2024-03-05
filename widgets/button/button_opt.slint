@@ -1,9 +1,9 @@
 import { TouchSpaceEnter } from "../event/touch_space_enter.slint";
-import { ButtonBase } from "button_base.slint";
+import { ButtonOptBase } from "button_opt_base.slint";
 
-// see button base, button removed @children
-export component Button inherits ButtonBase {
-    logic_color: root.enabled && (touch.has_hover || touch.has_focus) ? root.hover_color : root.color;
+export component ButtonOpt inherits ButtonOptBase {
+    in property <bool> click_change_checked: true;
+    logic_color: root.enabled && (root.checked || touch.has_hover || touch.has_focus) ? root.hover_color : root.color;
 
     callback clicked;
 
@@ -21,7 +21,10 @@ export component Button inherits ButtonBase {
         mouse-cursor: root.mouse_cursor;
 
         clicked => {
-            if (root.enabled) {
+            if root.enabled {
+                if click_change_checked {
+                    root.checked = !root.checked;
+                }
                 root.clicked();
             }
         }
