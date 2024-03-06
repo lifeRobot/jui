@@ -1,0 +1,79 @@
+import { TouchSpaceEnter } from "../event/touch_space_enter.slint";
+import { DrawerTop } from "../drawer/drawer_top.slint";
+
+export component ComboBox {
+    in property <string> placeholder_text: "Select";
+    in property <brush> placeholder_color: gray;
+    in property <length> font_size: 14px;
+    in property <brush> underline_color: gray;
+
+    private property <bool> active: false;
+
+    width: 100%;
+    height: 100%;
+
+    states [
+        has_active when active: {
+            icon.rotation-angle: -180deg;
+        }
+    ]
+
+    rect:= Rectangle {
+        x: 0px;
+        width: max(root.width, 80px);
+        height: max(root.height, 20px);
+        Text {
+            x: 8px;
+            y: (parent.height - font_size) / 2;
+            text: placeholder_text;
+            color: placeholder_color;
+            font-size: font_size;
+        }
+
+        // icon
+        icon:= Image {
+            x: parent.width - font_size - 8px;
+            y: (parent.height - font_size) / 2 + (active ? -2px : 2px);
+            width: font_size;
+            source: @image-url("../icons/dropdown.svg");
+            colorize: gray;// temporarily not allowed to modify icon color
+
+            animate rotation-angle,y {
+                 duration: 300ms;
+            }
+        }
+
+        // line
+        Rectangle {
+            height: 1px;
+            y: root.height;
+            background: underline_color;
+        }
+
+        touch:= TouchSpaceEnter {
+            clicked => {
+                active = !active;
+                cont.change_show(active);
+            }
+        }
+    }
+
+    cont:= DrawerTop {
+        x: 0;
+        y: rect.height + 5px;
+        height: 100px;
+        width: rect.width;
+        show: active;
+
+        up:= Image {
+            y: 0px;
+            width: 8px;
+            source: @image-url("../icons/up.svg");
+            colorize: gray;
+        }
+        Rectangle {
+            y: up.height - 1px;
+            background: red;
+        }
+    }
+}
