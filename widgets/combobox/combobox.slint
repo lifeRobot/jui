@@ -1,16 +1,68 @@
 import { TouchSpaceEnter } from "../event/touch_space_enter.slint";
 import { DrawerTop } from "../drawer/drawer_top.slint";
+import { ScrollView } from "std-widgets.slint";
+
+export struct ComboBoxData {
+    id:string,
+    text:string,
+}
+
+// combo select text
+component ComboText {
+    in property <string> text <=> txt.text;
+    in property <length> font_size;
+    in property <brush> font_color <=> txt.color;
+    in property <length> spacing;
+    in property <brush> background;
+    in property <brush> hover_color;
+
+    callback clicked <=> touch.clicked;
+
+    height: txt.height + spacing;
+
+    rect:= Rectangle {
+        background: touch.has_hover ? hover_color : background;
+
+        animate background {
+             duration: 300ms;
+        }
+
+        Rectangle {
+            x: 8px;
+            width: root.width - 16px;
+            txt:= Text {x: 0;font-size: font_size;}
+        }
+    }
+
+    touch:= TouchArea {mouse-cursor: pointer;}
+}
 
 export component ComboBox {
+    // default select
+    in-out property <ComboBoxData> combobox_data;
+    in property <[ComboBoxData]> data;
+    in property <brush> color: black;
     in property <string> placeholder_text: "Select";
     in property <brush> placeholder_color: gray;
     in property <length> font_size: 14px;
     in property <brush> underline_color: gray;
+    in property <brush> combo_background: white;
+    in property <length> combo_border_radius: 5px;
+    in property <brush> combo_border_color: lightgray;
+    in property <brush> combo_hover_color: #d3d3d3cc;
+    in property <brush> combo_color: color;
+    in property <length> combo_spacing: 8px;
+    in property <brush> hover_color: underline_color;
 
     private property <bool> active: false;
+    private property <bool> has_hover: touch.has_hover || touch.has_focus || active;
+    private property <brush> logic_color: has_hover ? hover_color : underline_color;
+    private property <bool> selected: combobox_data.id != "" || combobox_data.text != "";
 
     width: 100%;
     height: 100%;
+
+    callback change(ComboBoxData);
 
     states [
         has_active when active: {
@@ -25,8 +77,8 @@ export component ComboBox {
         Text {
             x: 8px;
             y: (parent.height - font_size) / 2;
-            text: placeholder_text;
-            color: placeholder_color;
+            text: selected ? combobox_data.text : placeholder_text;
+            color: selected ? color : placeholder_color;
             font-size: font_size;
         }
 
@@ -36,7 +88,7 @@ export component ComboBox {
             y: (parent.height - font_size) / 2 + (active ? -2px : 2px);
             width: font_size;
             source: @image-url("../icons/dropdown.svg");
-            colorize: gray;// temporarily not allowed to modify icon color
+            colorize: logic_color;
 
             animate rotation-angle,y {
                  duration: 300ms;
@@ -44,24 +96,23 @@ export component ComboBox {
         }
 
         // line
-        Rectangle {
+        line:= Rectangle {
             height: 1px;
-            y: root.height;
-            background: underline_color;
+            y: parent.height + 3px;
+            background: logic_color;
         }
 
         touch:= TouchSpaceEnter {
             clicked => {
-                active = !active;
-                cont.change_show(active);
+                toggle();
             }
         }
     }
 
-    cont:= DrawerTop {
+    drawer_top:= DrawerTop {
         x: 0;
-        y: rect.height + 5px;
-        height: 100px;
+        y: rect.height + 8px;
+        height: up.height + cont.height - 1px;
         width: rect.width;
         show: active;
 
@@ -69,11 +120,54 @@ export component ComboBox {
             y: 0px;
             width: 8px;
             source: @image-url("../icons/up.svg");
-            colorize: gray;
+            colorize: combo_border_color == transparent ? combo_background : combo_border_color;
         }
-        Rectangle {
+        cont:= Rectangle {
             y: up.height - 1px;
-            background: red;
+            height: min(5,data.length) * (font_size + combo_spacing);
+            border-radius: combo_border_radius;
+            border-width: 1px;
+            border-color: combo_border_color;
+            background: combo_background;
+
+            ScrollView {
+                viewport-width: cont.width;
+                viewport-height: data.length * (font_size + combo_spacing);
+
+                for combo[i] in data: ComboText {
+                    width: rect.width;
+                    text: combo.text;
+                    y: i * (font_size + combo_spacing);
+                    font_color: combo_color;
+                    font_size: font_size;
+                    background: mod(i,2) == 0 ? transparent : #d3d3d34d;
+                    hover_color: combo_hover_color;
+                    spacing: combo_spacing;
+
+                    clicked => {
+                        close();
+                        combobox_data = combo;
+                        change(combo);
+                    }
+                }
+            }
         }
+    }
+
+    public function open() {
+        change_active(true);
+    }
+
+    public function close() {
+        change_active(false);
+    }
+
+    public function toggle() {
+        change_active(!active);
+    }
+
+    public function change_active(is_active: bool) {
+        active = is_active;
+        drawer_top.change_show(active);
     }
 }

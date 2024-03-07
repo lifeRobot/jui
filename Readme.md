@@ -28,6 +28,7 @@ more function coming soon
 | DrawerRight     | ```import { DrawerRight } from "@jui/drawer/drawer_right.slint";```         |
 | DrawerBottom    | ```import { DrawerBottom } from "@jui/drawer/drawer_bottom.slint";```       |
 | Tabs            | ```import { Tabs } from "@jui/nav/tabs.slint";```                           |
+| ComboBox        | ```import { ComboBox } from "@jui/combobox/combobox.slint";```              |
 
 ### Supported data
 
@@ -39,6 +40,7 @@ more function coming soon
 | ConfirmData       | ```import { ConfirmData } from "@jui/message/confirm.slint";```          |
 | ConfirmTitleData  | ```import { ConfirmTitleData } from "@jui/message/confirm.slint";```     |
 | ConfirmButtonData | ```import { ConfirmButtonData } from "@jui/message/confirm.slint";```    |
+| ComboBoxData      | ```import { ComboBoxData } from "@jui/combobox/combobox.slint";```       |
 
 ### Supported icons
 
@@ -55,7 +57,7 @@ features enable surrealism_ui, Cargo.toml file like example:
 slint = "1.4.1"
 
 [build-dependencies]
-jui = { version = "0.1.15", features = ["surrealism_ui"] }
+jui = { version = "0.1.16", features = ["surrealism_ui"] }
 ```
 
 use SurrealismUI in you slint file:
@@ -94,7 +96,7 @@ Cargo.toml file :
 slint = "1.4.1"
 
 [build-dependencies]
-jui = "0.1.15"
+jui = "0.1.16"
 ```
 
 main.rs file :

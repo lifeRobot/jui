@@ -2,6 +2,8 @@ export component DrawerCommon {
     in-out property <bool> show: false;
     in property <brush> background: white;
 
+    callback clicked <=> touch.clicked;
+
     x: 0;
     y: 0;
     width: 50%;
@@ -14,5 +16,5 @@ export component DrawerCommon {
     @children
 
     // fix that triggers the click effect of covered layer components
-    TouchArea {}
+    touch:= TouchArea {}
 }
