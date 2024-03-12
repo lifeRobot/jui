@@ -125,7 +125,7 @@ impl SurrealismUI {
         if out_dir.is_file() {
             return Err(anyhow::anyhow!("out dir is file"));
         }
-        out_dir = out_dir.join("surrealism_ui");
+        out_dir = out_dir.join(surrealism_url::EXTRACT_NAME);
         out_dir.set_extension("zip");
 
         // if file is downloaded, open and return it

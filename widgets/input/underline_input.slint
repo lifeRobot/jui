@@ -45,13 +45,14 @@ export component UnderlineInput {
 
     Rectangle {
         input:= Input {
+            x: 10px;
             y: 0;
-            width: parent.width;
+            width: parent.width - 20px;
             placeholder_color: placeholder_color;
         }
         Rectangle {
             y: root.height;
-            width: input.width + 20px;
+            width: parent.width;
             height: 1px;
             background: logic_color;
         }
