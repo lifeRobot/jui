@@ -57,7 +57,7 @@ features enable surrealism_ui, Cargo.toml file like example:
 slint = "1.4.1"
 
 [build-dependencies]
-jui = { version = "0.1.18", features = ["surrealism_ui"] }
+jui = { version = "0.1.19", features = ["surrealism_ui"] }
 ```
 
 use SurrealismUI in you slint file:
@@ -96,7 +96,7 @@ Cargo.toml file :
 slint = "1.4.1"
 
 [build-dependencies]
-jui = "0.1.18"
+jui = "0.1.19"
 ```
 
 main.rs file :

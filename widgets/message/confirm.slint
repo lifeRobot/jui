@@ -97,6 +97,9 @@ export component Confirm {
     // if return false, confirm will be keep show
     callback confirm() -> bool;
     callback cancel() -> bool;
+    // *_close will be called when component is closed
+    callback confirm_close();
+    callback cancel_close();
     // callback default true
     confirm => {true}
     cancel => { true }
@@ -124,16 +127,20 @@ export component Confirm {
             background: root.background;
             border-radius: border_radius;
 
-            confirm => {is_close(confirm());}
-            cancel => {is_close(cancel());}
+            confirm => {
+                if confirm() {
+                    popup.close();
+                    confirm_close();
+                }
+            }
+            cancel => {
+                if cancel() {
+                    popup.close();
+                    cancel_close();
+                }
+            }
 
             @children
-        }
-    }
-
-    function is_close(popup_close:bool) {
-        if (popup_close) {
-            popup.close()
         }
     }
 }
