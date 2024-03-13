@@ -57,12 +57,14 @@ export component ComboBox {
     private property <bool> active: false;
     private property <bool> has_hover: touch.has_hover || touch.has_focus || active;
     private property <brush> logic_color: has_hover ? hover_color : underline_color;
-    private property <bool> selected: combobox_data.id != "" || combobox_data.text != "";
+    private property <bool> is_selected: combobox_data.id != "" || combobox_data.text != "";
 
     width: 100%;
     height: 100%;
 
+    callback selected(ComboBoxData);
     callback change(ComboBoxData);
+    callback clicked();
 
     states [
         has_active when active: {
@@ -77,8 +79,8 @@ export component ComboBox {
         Text {
             x: 8px;
             y: (parent.height - font_size) / 2;
-            text: selected ? combobox_data.text : placeholder_text;
-            color: selected ? color : placeholder_color;
+            text: is_selected ? combobox_data.text : placeholder_text;
+            color: is_selected ? color : placeholder_color;
             font-size: font_size;
         }
 
@@ -104,6 +106,7 @@ export component ComboBox {
 
         touch:= TouchSpaceEnter {
             clicked => {
+                clicked();
                 toggle();
             }
         }
@@ -146,8 +149,12 @@ export component ComboBox {
 
                     clicked => {
                         close();
+                        selected(combo);
+                        // is change
+                        if combobox_data.id != combo.id || combobox_data.text != combo.text {
+                            change(combo);
+                        }
                         combobox_data = combo;
-                        change(combo);
                     }
                 }
             }

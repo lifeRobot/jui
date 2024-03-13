@@ -27,6 +27,7 @@ export component UnderlineInput {
 
     callback accepted <=> input.accepted;
     callback edited <=> input.edited;
+    callback clicked();
 
     forward-focus: input;
     height: input.height;
@@ -65,6 +66,7 @@ export component UnderlineInput {
 
         clicked => {
             input.focus();
+            clicked();
         }
     }
 }
