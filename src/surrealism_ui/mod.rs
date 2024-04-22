@@ -114,7 +114,7 @@ impl SurrealismUI {
             return Ok(out_dir);
         }
 
-        zip::ZipArchive::new(file)?.extract(&self.out_dir)?;
+        zip::ZipArchive::new(file)?.extract(&out_dir)?;
         Ok(out_dir)
     }
 
@@ -125,8 +125,7 @@ impl SurrealismUI {
         if out_dir.is_file() {
             return Err(anyhow::anyhow!("out dir is file"));
         }
-        out_dir = out_dir.join(surrealism_url::EXTRACT_NAME);
-        out_dir.set_extension("zip");
+        out_dir = out_dir.join(format!("{}.zip", surrealism_url::EXTRACT_NAME));
 
         // if file is downloaded, open and return it
         if out_dir.exists() {
