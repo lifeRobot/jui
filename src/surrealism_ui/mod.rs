@@ -114,7 +114,7 @@ impl SurrealismUI {
             return Ok(out_dir);
         }
 
-        zip::ZipArchive::new(file)?.extract(&out_dir)?;
+        zip::ZipArchive::new(file)?.extract(&self.out_dir)?;
         Ok(out_dir)
     }
 

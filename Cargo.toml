@@ -5,7 +5,7 @@ members = [
 
 [package]
 name = "jui"
-version = "0.1.22"
+version = "0.1.23"
 edition = "2021"
 description = "jui is a ui set based on slint"
 readme = "Readme.md"
@@ -19,11 +19,12 @@ repository = "https://github.com/lifeRobot/jui"
 
 [dependencies]
 slint-build = "1.5.1"
-jui_file = "0.1.5"
+jui_file = "0.1.23"
+#jui_file = { path = "./libs/jui_file" }
 
-cbsk_base = { version = "0.1.8", optional = true }
+cbsk_base = { version = "1.1.0", optional = true }
 reqwest = { version = "0.12.2", features = ["blocking"], optional = true }
-zip = { version = "0.6.6", optional = true }
+zip = { version = "1.2.3", default-features = false, features = ["deflate"], optional = true }
 
 [features]
 # support SurrealismUI, you can use @surrealism import

@@ -1,11 +1,11 @@
 use std::fmt::{Debug, Display, Formatter};
 
 /// root dir extracted from SurrealismUI zip file
-pub const EXTRACT_NAME: &str = "surrealism-ui_0.4.3";
+pub const EXTRACT_NAME: &str = "surrealism-ui_0.4.4";
 /// download SurrealismUI by github url
-pub const GITHUB: &str = "https://github.com/Surrealism-All/SurrealismUI/releases/download/v0.4.3/surrealism-ui_0.4.3.zip";
+pub const GITHUB: &str = "https://github.com/Surrealism-All/SurrealismUI/releases/download/v0.4.4/surrealism-ui_0.4.4.zip";
 /// download SurrealismUI by gitee url
-pub const GITEE: &str = "https://gitee.com/life_robot/SurrealismUI/releases/download/v0.4.3/surrealism-ui_0.4.3.zip";
+pub const GITEE: &str = "https://gitee.com/life_robot/SurrealismUI/releases/download/v0.4.4/surrealism-ui_0.4.4.zip";
 
 /// SurrealismUI download url
 pub enum SurrealismUrl {
