@@ -1,6 +1,6 @@
 [package]
 name = "jui_file"
-version = "0.1.24"
+version = "0.1.25"
 edition = "2021"
 description = "jui_file is a simple file tool"
 readme = "Readme.md"
@@ -12,5 +12,5 @@ repository = "https://github.com/lifeRobot/jui/tree/master/libs/jui_file"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cbsk_base = { version = "1.2.0", features = ["macro", "log"] }
+cbsk_base = { version = "1.3.3", features = ["macro", "log"] }
 #cbsk_base = { path = "../../../cbsk/libs/cbsk_base", features = ["macro", "log"] }
