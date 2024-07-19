@@ -4,7 +4,7 @@ use std::env;
 use std::path::{Path, PathBuf};
 pub use slint_build;
 use slint_build::CompileError;
-pub use jui_file;
+pub use cbsk_file;
 use crate::jui_config::JuiConfig;
 
 #[cfg(feature = "surrealism_ui")]

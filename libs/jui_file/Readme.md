@@ -1,6 +1,2 @@
-jui_file is a simple file tool  
-you can use jui_file create file/dir, read/write file and etc
-
-### Example
-
-no examples, please review the source code yourself
+this crates move to cbsk_file, jui_file will no longer be maintained, more
+see [cbsk_file](https://crates.io/crates/cbsk_file)

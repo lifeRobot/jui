@@ -2,21 +2,6 @@ jui is a ui set based on slint
 [SurrealismUI](https://github.com/Surrealism-All/SurrealismUI) is already supported  
 more function coming soon
 
-### warn
-
-jui will temporarily lock the slint version is 1.5.1,
-because [slint#5260](https://github.com/slint-ui/slint/issues/5260)  
-please use the following method to import the latest version of Jui and lock the slint version
-
-```toml
-[dependencies]
-slint = "~1.5.1"
-
-[build-dependencies]
-jui = "0.1.25"
-# jui = { version = "0.1.25", features = ["surrealism_ui"] }
-```
-
 ### Supported components
 
 | name            | import example                                                              |
@@ -69,10 +54,10 @@ features enable surrealism_ui, Cargo.toml file like example:
 
 ```toml
 [dependencies]
-slint = "~1.5.1"
+slint = "1.7.0"
 
 [build-dependencies]
-jui = { version = "0.1.25", features = ["surrealism_ui"] }
+jui = { version = "0.2.0", features = ["surrealism_ui"] }
 ```
 
 use SurrealismUI in you slint file:
@@ -96,7 +81,7 @@ if you want use alias import SurrealismUI, example for this build.rs:
 use jui::surrealism_ui::SurrealismUI;
 
 pub fn main() {
-    let separator = jui::jui_file::separator;
+    let separator = jui::cbsk_file::separator;
     let surrealism_ui = SurrealismUI::new_with_alias("sui");
     jui::compile_with_surrealism_ui(format!("view{separator}main.slint"), surrealism_ui).unwrap();
 }
@@ -108,10 +93,10 @@ Cargo.toml file :
 
 ```toml
 [dependencies]
-slint = "~1.5.1"
+slint = "1.7.0"
 
 [build-dependencies]
-jui = "0.1.25"
+jui = "0.2.0"
 ```
 
 main.rs file :
@@ -128,7 +113,7 @@ build.rs file :
 
 ```rust
 pub fn main() {
-    let separator = jui::jui_file::separator;
+    let separator = jui::cbsk_file::separator;
     jui::compile(format!("view{separator}main.slint")).unwrap();
 }
 ```

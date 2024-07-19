@@ -129,11 +129,11 @@ impl SurrealismUI {
 
         // if file is downloaded, open and return it
         if out_dir.exists() {
-            return Ok(jui_file::just_open_file(&out_dir)?);
+            return Ok(cbsk_file::just_open_file(&out_dir)?);
         }
 
         let bytes = reqwest::blocking::get(self.url)?.bytes()?;
-        let mut file = jui_file::open_create_file(&out_dir)?;
+        let mut file = cbsk_file::open_create_file(&out_dir)?;
         file.write_all(&bytes.to_vec())?;
         file.flush()?;
 
