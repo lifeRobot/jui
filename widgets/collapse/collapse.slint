@@ -13,24 +13,22 @@ component Handle inherits Rectangle {
         }
     ]
 
-    img:= Image {
+    img := Image {
         x: 10px;
         y: txt.font_size / 2 + 3px;
         source: @image-url("../icons/dropdown.svg");
         colorize: text_color;
         width: txt.font_size - 2px;
 
-        animate rotation-angle,y {
-             duration: 300ms;
-        }
+        animate rotation-angle, y { duration: 300ms; }
     }
 
-    txt:= Text {
+    txt := Text {
         x: img.width + 15px;
         color: text_color;
     }
 
-    touch:= TouchArea {
+    touch := TouchArea {
         mouse-cursor: pointer;
     }
 }
@@ -45,12 +43,10 @@ export component Collapse {
 
     width: 100%;
 
-    animate height {
-         duration: 300ms;
-    }
+    animate height { duration: 300ms; }
 
     Rectangle {
-        handle:= Handle {
+        handle := Handle {
             y: 0px;
             height: 30px;
             text: title;
@@ -62,7 +58,8 @@ export component Collapse {
                 change_height();
             }
         }
-        cont:= Rectangle {
+
+        cont := Rectangle {
             y: handle.height;
             height: 0;
             clip: true;
@@ -72,9 +69,7 @@ export component Collapse {
                 change_height();
             }
 
-            animate height {
-                 duration: 300ms;
-            }
+            animate height { duration: 300ms; }
 
             @children
         }
@@ -84,10 +79,9 @@ export component Collapse {
     function change_height() {
         if show {
             root.height = logic_height;
-             cont.height = logic_height - handle.height;
+            cont.height = logic_height - handle.height;
             return;
         }
-
         root.height = handle.height;
         cont.height = 0;
     }

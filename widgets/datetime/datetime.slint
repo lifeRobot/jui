@@ -1,0 +1,79 @@
+import { Date,Time } from "std-widgets.slint";
+import { YearPickers } from "./year_pickers.slint";
+import { MonthPickers } from "month_pickers.slint";
+import { TimePickers } from "./time_pickers.slint";
+import { ButtonRound } from "../button/button_round.slint";
+
+export struct DateTimeData {
+    date: Date,
+    time: Time,
+}
+
+component Header inherits Rectangle {
+    in property <[string]> months:["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    background: #80808050;
+    HorizontalLayout {
+        for month in months: Rectangle {
+            Text {
+                text: month;
+            }
+        }
+    }
+}
+
+component Body inherits Rectangle {
+    for i in 6: HorizontalLayout {
+        height: 25px;
+        y: i * 30px;
+        for j in 7: Rectangle {
+            ButtonRound {
+                active: i == j;
+                text: j;
+            }
+        }
+    }
+}
+
+component Footer {
+    TimePickers { }
+}
+
+export component DateTime inherits Rectangle {
+    // set default
+    in-out property <DateTimeData> date_time:{ date:{ year:2024, month:9, day:24 }, time:{ hour:0, minute:0, second:0 } };
+    in property <[string]> months <=> header.months;
+    background: white;
+
+    year_pick := YearPickers {
+        x: 10px;
+        y: 10px;
+    }
+
+    month_pick := MonthPickers {
+        x: year_pick.x + year_pick.width + 10px;
+        y: year_pick.y;
+        min_back() => {
+            year_pick.num -= 1;
+            self.num = self.max_limit.num;
+        }
+        max_next() => {
+            year_pick.num += 1;
+            self.num = self.min_limit.num;
+        }
+    }
+
+    header := Header {
+        width: month_pick.x + month_pick.width - year_pick.x;
+        height: month_pick.height;
+        x: year_pick.x;
+        y: self.height + month_pick.y + 5px;
+    }
+
+    Body {
+        width: header.width;
+        x: header.x;
+        y: header.y + header.height + 5px;
+    }
+
+    Footer { }
+}

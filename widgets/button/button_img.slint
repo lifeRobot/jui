@@ -1,0 +1,41 @@
+import { TouchSpaceEnter } from "../event/touch_space_enter.slint";
+
+export component ButtonImg {
+    in property <bool> enabled: true;
+    in property <brush> color: black;
+    in property <brush> hover_color: color;
+    in property <length> border_width: 0;
+    in property <length> border_radius: 0;
+    in property <bool> plain: false;
+    in property <image> img <=> img_data.source;
+    in property <length> img_x:0;
+    in property <angle> rotate <=> img_data.rotation_angle;
+    in property <MouseCursor> mouse_cursor:pointer;
+    // logic color, default is color
+    private property <brush> logic_color: enabled && (touch.has_hover || touch.has_focus) ? hover_color : color;
+    callback clicked;
+
+    Rectangle {
+        width: root.width;
+        height: root.height;
+        border-color: logic_color;
+        border-width: border_width;
+        border-radius: border_radius;
+        background: plain ? logic_color : transparent;
+        img_data := Image {
+            x: img_x;
+            width: parent.width - 10px;
+            height: parent.height - 10px;
+            colorize: plain ? transparent : color;
+        }
+    }
+
+    touch := TouchSpaceEnter {
+        mouse-cursor: root.mouse_cursor;
+        clicked => {
+            if root.enabled {
+                root.clicked();
+            }
+        }
+    }
+}

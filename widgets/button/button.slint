@@ -3,7 +3,9 @@ import { ButtonBase } from "button_base.slint";
 
 // see button base, button removed @children
 export component Button inherits ButtonBase {
-    logic_color: root.enabled && (touch.has_hover || touch.has_focus) ? root.hover_color : root.color;
+    out property <bool> has_hover <=> touch.has_hover;
+    out property <bool> has_focus <=> touch.has_focus;
+    logic_color: root.enabled && (has_hover || has_focus) ? root.hover_color : root.color;
 
     callback clicked;
 
@@ -17,7 +19,7 @@ export component Button inherits ButtonBase {
     ]
 
     // support toggled and mouse cursor
-    touch:= TouchSpaceEnter {
+    touch := TouchSpaceEnter {
         mouse-cursor: root.mouse_cursor;
 
         clicked => {

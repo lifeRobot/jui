@@ -1,0 +1,70 @@
+import { ButtonImg } from "../button/button_img.slint";
+import { Button } from "../button/button.slint";
+
+/// number limit
+export struct NumberLimit {
+    enable:bool,
+    num:int,
+}
+
+export component NumberPickers inherits Rectangle {
+    in property <NumberLimit> min_limit;
+    in property <NumberLimit> max_limit;
+    in-out property <int> num:0;
+    width: left.width + cont.width + right.width;
+    height: 25px;
+    callback change(int);
+    callback min_back(int);
+    callback max_next(int);
+    left := ButtonImg {
+        x: 0;
+        y: 0;
+        width: root.height;
+        height: root.height;
+        img: @image-url("../icons/dropdown.svg");
+        color: #80808050;
+        hover_color: #80808030;
+        rotate: 90deg;
+        img_x: 2px;
+        plain: true;
+        clicked => {
+            if min_limit.enable && min_limit.num >= num {
+                min_back(num);
+                return;
+            }
+            num -= 1;
+            change(num)
+        }
+    }
+
+    cont := Button {
+        x: root.height;
+        hover_color: #00000050;
+        width: 50px;
+        border_radius: 0;
+        border_width: 0;
+        height: root.height;
+        text: num;
+    }
+
+    right := ButtonImg {
+        x: root.height + 50px;
+        y: 0;
+        width: root.height;
+        height: root.height;
+        img: @image-url("../icons/dropdown.svg");
+        color: #80808050;
+        hover_color: #80808030;
+        rotate: -90deg;
+        img_x: 8px;
+        plain: true;
+        clicked => {
+            if max_limit.enable && max_limit.num <= num {
+                max_next(num);
+                return;
+            }
+            num += 1;
+            change(num)
+        }
+    }
+}
