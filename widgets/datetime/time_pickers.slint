@@ -1,3 +1,63 @@
+import { ButtonRound } from "../button/button_round.slint";
+
+component TimeButton inherits ButtonRound {
+    y: 0;
+    width: 15px;
+    height: 25px;
+    border_radius: 0;
+    active_color: #80808050;
+    hover_color: #80808050;
+}
+
+component TimeSpace inherits Rectangle {
+    y: 0;
+    width: 1px;
+    Text {
+        text: ":";
+    }
+}
+
 export component TimePickers {
     in property <string> name:"time";
+
+    txt := Rectangle {
+        x: 0;
+        y: 0;
+        background: #80808050;
+        height: 25px;
+        width: 40px;
+        Text {
+            text: name;
+        }
+    }
+
+    Rectangle {
+        x: txt.width - 1px;
+        y: 0;
+        width: 53px;
+        border-width: 1px;
+        border-color: #80808050;
+        hour := TimeButton {
+            x: 1px;
+            text: "00";
+        }
+
+        hour_space := TimeSpace {
+            x: hour.x + hour.width + 1px;
+        }
+
+        minute := TimeButton {
+            x: hour_space.x + 2px;
+            text: "00";
+        }
+
+        minute_space := TimeSpace {
+            x: minute.x + minute.width + 1px;
+        }
+
+        TimeButton {
+            x: minute_space.x + 2px;
+            text: "00";
+        }
+    }
 }

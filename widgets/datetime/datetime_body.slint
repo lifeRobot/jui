@@ -1,0 +1,71 @@
+import { ButtonRound } from "../button/button_round.slint";
+
+export component DateTimeBody inherits Rectangle {
+    in property <int> start_week:0;
+    in property <int> max_day:31;
+    in property <string> day:1;
+    private property <int> end_week:max_day - get_day(get_cent_line(),6);
+    private property <int> last_line:get_cent_line() + 1;
+    height: 180px;
+    callback clicked(int);
+    // calc the first line
+    HorizontalLayout {
+        height: 25px;
+        y: 0;
+        Rectangle {
+            width: root.width / 7 * start_week;
+        }
+
+        for i in (7 - start_week): Rectangle {
+            ButtonRound {
+                active: day == self.text;
+                text: get_day(0,i + start_week);
+                clicked => {
+                    clicked(get_day(0,i + start_week));
+                }
+            }
+        }
+    }
+
+    // calc the centent line
+    for i in get_cent_line(): HorizontalLayout {
+        height: 25px;
+        y: (i + 1) * 30px;
+        for j in 7: Rectangle {
+            ButtonRound {
+                active: day == self.text;
+                text: get_day(i + 1,j);
+                clicked => {
+                    clicked(get_day(i + 1,j));
+                }
+            }
+        }
+    }
+
+    // calc the last line
+    HorizontalLayout {
+        height: 25px;
+        y: (get_cent_line() + 1) * 30px;
+        for i in end_week: Rectangle {
+            ButtonRound {
+                active: day == self.text;
+                text: get_day(last_line,i);
+                clicked => {
+                    clicked(get_day(last_line,i));
+                }
+            }
+        }
+        Rectangle {
+            width: (root.width / 7) * (7 - end_week);
+        }
+    }
+
+    // get day
+    function get_day(line: int, row: int) -> int {
+        line * 7 + row + 1 - start_week
+    }
+    // get centent line
+    function get_cent_line() -> int {
+        (max_day - get_day(0,6)) / 7
+    }
+}

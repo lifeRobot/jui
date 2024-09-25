@@ -1,8 +1,9 @@
 import { Date,Time } from "std-widgets.slint";
 import { YearPickers } from "./year_pickers.slint";
 import { MonthPickers } from "month_pickers.slint";
+import { DateTimeBody } from "./datetime_body.slint";
 import { TimePickers } from "./time_pickers.slint";
-import { ButtonRound } from "../button/button_round.slint";
+import { FunctionButton } from "./function_button.slint";
 
 export struct DateTimeData {
     date: Date,
@@ -14,6 +15,7 @@ component Header inherits Rectangle {
     background: #80808050;
     HorizontalLayout {
         for month in months: Rectangle {
+            width: root.width / 7;
             Text {
                 text: month;
             }
@@ -21,44 +23,53 @@ component Header inherits Rectangle {
     }
 }
 
-component Body inherits Rectangle {
-    for i in 6: HorizontalLayout {
-        height: 25px;
-        y: i * 30px;
-        for j in 7: Rectangle {
-            ButtonRound {
-                active: i == j;
-                text: j;
-            }
-        }
-    }
-}
-
-component Footer {
+component Footer inherits HorizontalLayout {
+    height: 25px;
+    callback ok <=> btn.ok;
+    callback now <=> btn.now;
+    callback cancel <=> btn.cancel;
     TimePickers { }
+
+    btn := FunctionButton { }
 }
 
 export component DateTime inherits Rectangle {
     // set default
-    in-out property <DateTimeData> date_time:{ date:{ year:2024, month:9, day:24 }, time:{ hour:0, minute:0, second:0 } };
+    in-out property <DateTimeData> date_time:{ date:{ year:2024, month:4, day:15 }, time:{ hour:0, minute:0, second:0 } };
     in property <[string]> months <=> header.months;
+    width: month_pick.x + month_pick.width + 10px;
+    height: footer.y + footer.height + 10px;
     background: white;
+    border-width: 1px;
+    border-color: gray;
 
     year_pick := YearPickers {
         x: 10px;
         y: 10px;
+        num: date_time.date.year;
+        change(num) => {
+            date_time.date.year = num;
+        }
     }
 
     month_pick := MonthPickers {
-        x: year_pick.x + year_pick.width + 10px;
+        x: year_pick.x + year_pick.width + 30px;
         y: year_pick.y;
+        num: date_time.date.month;
         min_back() => {
-            year_pick.num -= 1;
-            self.num = self.max_limit.num;
+            date_time.date.year -= 1;
+            date_time.date.month = self.max_limit.num;
+            year_pick.num = date_time.date.year;
+            self.num = date_time.date.month;
         }
         max_next() => {
-            year_pick.num += 1;
-            self.num = self.min_limit.num;
+            date_time.date.year += 1;
+            date_time.date.month = self.min_limit.num;
+            year_pick.num = date_time.date.year;
+            self.num = date_time.date.month;
+        }
+        change(num) => {
+            date_time.date.month = num;
         }
     }
 
@@ -69,11 +80,74 @@ export component DateTime inherits Rectangle {
         y: self.height + month_pick.y + 5px;
     }
 
-    Body {
+    body := DateTimeBody {
         width: header.width;
         x: header.x;
         y: header.y + header.height + 5px;
+        start_week: get_start_week();
+        max_day: get_month_last_day();
+        day: date_time.date.day;
+        clicked(num) => {
+            date_time.date.day = num;
+        }
     }
 
-    Footer { }
+    footer := Footer {
+        width: body.width;
+        x: body.x;
+        y: body.y + body.height + 5px;
+        // TODO under development
+        ok => {
+            debug(@tr("{}-{}-{} {}:{}:{}",date_time.date.year,date_time.date.month,date_time.date.day,date_time.time.hour,date_time.time.minute,date_time.time.second));
+        }
+        now => {
+            debug(@tr("{}-{}-{} {}:{}:{}",date_time.date.year,date_time.date.month,date_time.date.day,date_time.time.hour,date_time.time.minute,date_time.time.second));
+        }
+        cancel => {
+            debug(@tr("{}-{}-{} {}:{}:{}",date_time.date.year,date_time.date.month,date_time.date.day,date_time.time.hour,date_time.time.minute,date_time.time.second));
+        }
+    }
+
+    // get month days
+    function get_month_last_day() -> int {
+        if is_31(date_time.date.month) {
+            return 31;
+        }
+        if is_30(date_time.date.month) {
+            return 30;
+        }
+        if is_leap_year(date_time.date.year) {
+            return 29;
+        }
+        28
+    }
+    // the month last day is 31
+    function is_31(month: int) -> bool {
+        month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12
+    }
+    // the month last day is 30
+    function is_30(month: int) -> bool {
+        month == 4 || month == 6 || month == 9 || month == 11
+    }
+    // the year is leap year
+    function is_leap_year(year: int) -> bool {
+        if Math.mod(year,100) == 0 {
+            return Math.mod(year,400) == 0;
+        }
+        Math.mod(year,4) == 0
+    }
+    // get month start week
+    function get_start_week() -> int {
+        get_week({ year:date_time.date.year, month:date_time.date.month, day:1 })
+    }
+    // get week, use Kim Larsen
+    function get_week(date: Date) -> int {
+        if date.month >= 3 {
+            return get_week_base(date);
+        }
+        get_week_base({ year:date.year - 1, month:date.month + 12, day:date.day })
+    }
+    function get_week_base(date: Date) -> int {
+        Math.mod((date.day + 2 * date.month + Math.floor(3 * (date.month + 1) / 5) + date.year + Math.floor(date.year / 4) - Math.floor(date.year / 100) + Math.floor(date.year / 400) + 1),7)
+    }
 }

@@ -13,6 +13,7 @@ export component ButtonBase {
     in property <length> border_width: 1px;
     in property <length> border_radius: 5px;
     in property <length> font_size: 14px;
+    in property <length> padding_width: 20px;
     in-out property <MouseCursor> mouse_cursor: pointer;
     in property <int> font_weight;
     // button is plain model
@@ -24,7 +25,7 @@ export component ButtonBase {
     in-out property <brush> logic_color: enabled ? hover_color : color;
 
     // default width and height
-    width: txt.preferred-width + 20px;
+    width: txt.preferred-width + padding_width;
     height: txt.preferred-height * 1.33;
 
     states [

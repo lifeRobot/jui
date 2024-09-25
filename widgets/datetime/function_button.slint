@@ -1,0 +1,37 @@
+import { Button } from "../button/button.slint";
+
+component FunctionButtonBase inherits Button {
+    height: 25px;
+    border_radius: 0;
+    padding_width: 10px;
+    plain: true;
+    color: #80808080;
+    hover_color: #80808060;
+}
+
+export component FunctionButton inherits HorizontalLayout {
+    in property <[string]> buttons:["Cancel", "Now", "Ok"];
+    callback ok();
+    callback now();
+    callback cancel();
+    FunctionButtonBase {
+        text: buttons[0];
+        clicked => {
+            cancel()
+        }
+    }
+
+    FunctionButtonBase {
+        text: buttons[1];
+        clicked => {
+            now()
+        }
+    }
+
+    FunctionButtonBase {
+        text: buttons[2];
+        clicked => {
+            ok();
+        }
+    }
+}
