@@ -1,27 +1,45 @@
-import { ButtonRound } from "../button/button_round.slint";
+import { NumberRound } from "./common_body.slint";
 
-export component DateTimeBody inherits Rectangle {
+component Header inherits Rectangle {
+    in property <[string]> months:["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    height: 25px;
+    background: #80808050;
+    HorizontalLayout {
+        for month in months: Rectangle {
+            width: root.width / 7;
+            Text {
+                text: month;
+            }
+        }
+    }
+}
+
+export component DayBody inherits Rectangle {
     in property <int> start_week:0;
     in property <int> max_day:31;
     in property <string> day:1;
+    in property <[string]> months <=> header.months;
     private property <int> end_week:max_day - get_day(get_cent_line(),6);
     private property <int> last_line:get_cent_line() + 1;
-    height: 180px;
     callback clicked(int);
+    header := Header {
+        y: 0;
+    }
+
     // calc the first line
     HorizontalLayout {
-        height: 25px;
-        y: 0;
+        height: header.height;
+        y: header.height + 5px;
         Rectangle {
             width: root.width / 7 * start_week;
         }
 
         for i in (7 - start_week): Rectangle {
-            ButtonRound {
+            NumberRound {
                 active: day == self.text;
-                text: get_day(0,i + start_week);
+                num: get_day(0,i + start_week);
                 clicked => {
-                    clicked(get_day(0,i + start_week));
+                    clicked(self.num);
                 }
             }
         }
@@ -30,13 +48,13 @@ export component DateTimeBody inherits Rectangle {
     // calc the centent line
     for i in get_cent_line(): HorizontalLayout {
         height: 25px;
-        y: (i + 1) * 30px;
+        y: (i + 2) * 30px;
         for j in 7: Rectangle {
-            ButtonRound {
+            NumberRound {
                 active: day == self.text;
-                text: get_day(i + 1,j);
+                num: get_day(i + 1,j);
                 clicked => {
-                    clicked(get_day(i + 1,j));
+                    clicked(self.num);
                 }
             }
         }
@@ -45,13 +63,13 @@ export component DateTimeBody inherits Rectangle {
     // calc the last line
     HorizontalLayout {
         height: 25px;
-        y: (get_cent_line() + 1) * 30px;
+        y: (get_cent_line() + 2) * 30px;
         for i in end_week: Rectangle {
-            ButtonRound {
+            NumberRound {
                 active: day == self.text;
-                text: get_day(last_line,i);
+                num: get_day(last_line,i);
                 clicked => {
-                    clicked(get_day(last_line,i));
+                    clicked(self.num);
                 }
             }
         }

@@ -1,0 +1,21 @@
+export component ChooseHeader inherits Rectangle {
+    in property <string> name:"Year";
+    in property <string> value;
+    height: 25px;
+    background: #80808050;
+    Rectangle {
+        width: 50%;
+        x: self.width * 0.5 - 20px;
+        Text {
+            text: name;
+        }
+    }
+
+    Rectangle {
+        width: 50%;
+        x: self.width * 0.5 + 20px;
+        Text {
+            text: value;
+        }
+    }
+}

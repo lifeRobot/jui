@@ -8,12 +8,17 @@ export component ButtonImg {
     in property <length> border_radius: 0;
     in property <bool> plain: false;
     in property <image> img <=> img_data.source;
-    in property <length> img_x:0;
+    in property <length> img_x:(self.width - img_data.width) / 2;
+    in property <length> img_y:(self.height - img_data.height) / 2;
     in property <angle> rotate <=> img_data.rotation_angle;
     in property <MouseCursor> mouse_cursor:pointer;
+    out property <length> img_width:img_data.width;
+    out property <length> img_height:img_data.height;
     // logic color, default is color
     private property <brush> logic_color: enabled && (touch.has_hover || touch.has_focus) ? hover_color : color;
     callback clicked;
+    width: 25px;
+    height: self.width;
 
     Rectangle {
         width: root.width;
@@ -24,8 +29,9 @@ export component ButtonImg {
         background: plain ? logic_color : transparent;
         img_data := Image {
             x: img_x;
-            width: parent.width - 10px;
-            height: parent.height - 10px;
+            y: img_y;
+            width: Math.min(parent.width,parent.height) - 10px;
+            height: self.width;
             colorize: plain ? transparent : color;
         }
     }

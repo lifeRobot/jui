@@ -1,0 +1,85 @@
+import { DateTimeData,ShowController,ChooseNames } from "./datetime_data.slint";
+import { YearBody } from "./year_body.slint";
+import { MonthBody } from "./month_body.slint";
+import { DayBody } from "./day_body.slint";
+import { HourBody } from "./hour_body.slint";
+import { MinuteBody } from "./minute_body.slint";
+
+export component ChooseController {
+    in-out property <ShowController> show_cont:ShowController.Day;
+    in-out property <DateTimeData> data;
+    in property <ChooseNames> choose_name:{
+        year:"Year",
+        month:"Month",
+        hour:"Hour",
+        minute:"Minute",
+        second:"Second",
+        monday:"Mon",
+        tuesday:"Tue",
+        wednesday:"Wed",
+        thursday:"Thu",
+        friday:"Fri",
+        saturday:"Sat",
+        sunday:"Sun"
+    };
+    in property <int> start_week:0;
+    in property <int> max_day:31;
+    height: 210px;
+    if ShowController.Day == show_cont: DayBody {
+        months: [
+            choose_name.sunday,
+            choose_name.monday,
+            choose_name.tuesday,
+            choose_name.wednesday,
+            choose_name.thursday,
+            choose_name.friday,
+            choose_name.saturday,
+        ];
+        start_week: start_week;
+        max_day: max_day;
+        day: data.date.day;
+        clicked(num) => {
+            data.date.day = num;
+        }
+    }
+    if ShowController.Year == show_cont: YearBody {
+        name: choose_name.year;
+        year: data.date.year;
+        clicked(num) => {
+            data.date.year = num;
+            show_cont = ShowController.Day;
+        }
+    }
+    if ShowController.Month == show_cont: MonthBody {
+        name: choose_name.month;
+        month: data.date.month;
+        clicked(num) => {
+            data.date.month = num;
+            show_cont = ShowController.Day;
+        }
+    }
+    if ShowController.Hour == show_cont: HourBody {
+        name: choose_name.hour;
+        hour: data.time.hour;
+        clicked(num) => {
+            data.time.hour = num;
+            show_cont = ShowController.Day;
+        }
+    }
+    if ShowController.Minute == show_cont: MinuteBody {
+        name: choose_name.minute;
+        minute: data.time.minute;
+        clicked(num) => {
+            data.time.minute = num;
+            show_cont = ShowController.Day;
+        }
+    }
+    if ShowController.Second == show_cont: MinuteBody {
+        name: choose_name.second;
+        minute: data.time.second;
+        clicked(num) => {
+            data.time.second = num;
+            show_cont = ShowController.Day;
+        }
+    }
+}

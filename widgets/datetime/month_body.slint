@@ -1,0 +1,30 @@
+import { ChooseHeader } from "./choose_header.slint";
+import { NumberRound } from "./common_body.slint";
+
+export component MonthBody inherits Rectangle {
+    in property <string> name:"Month";
+    in-out property <int> month:1;
+    callback clicked(int);
+    header := ChooseHeader {
+        name: name;
+        value: month;
+        y: 0;
+    }
+
+    VerticalLayout {
+        height: 180px;
+        y: header.height + 5px;
+        for i in 4: HorizontalLayout {
+            for j in 3: Rectangle {
+                NumberRound {
+                    width: 40px;
+                    active: self.num == month;
+                    num: i * 3 + j + 1;
+                    clicked => {
+                        clicked(self.num)
+                    }
+                }
+            }
+        }
+    }
+}

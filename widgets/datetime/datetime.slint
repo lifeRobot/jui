@@ -1,42 +1,46 @@
 import { Date,Time } from "std-widgets.slint";
+import { DateTimeData,ShowController,ChooseNames } from "./datetime_data.slint";
 import { YearPickers } from "./year_pickers.slint";
 import { MonthPickers } from "month_pickers.slint";
-import { DateTimeBody } from "./datetime_body.slint";
-import { TimePickers } from "./time_pickers.slint";
-import { FunctionButton } from "./function_button.slint";
+import { ChooseController } from "choose_controller.slint";
+import { TimePickers,TimeData } from "./time_pickers.slint";
+import { FunctionButton,FunctionButtonName } from "./function_button.slint";
 
-export struct DateTimeData {
-    date: Date,
-    time: Time,
-}
-
-component Header inherits Rectangle {
-    in property <[string]> months:["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    background: #80808050;
-    HorizontalLayout {
-        for month in months: Rectangle {
-            width: root.width / 7;
-            Text {
-                text: month;
-            }
-        }
-    }
-}
+export { DateTimeData,ChooseNames,FunctionButtonName }
 
 component Footer inherits HorizontalLayout {
     height: 25px;
+    in property <TimeData> data <=> time.data;
+    in property <string> time_name <=> time.name;
+    in property <bool> hour_active <=> time.hour_active;
+    in property <bool> minute_active <=> time.minute_active;
+    in property <bool> second_active <=> time.second_active;
+    in property <FunctionButtonName> buttons <=> btn.buttons;
     callback ok <=> btn.ok;
     callback now <=> btn.now;
     callback cancel <=> btn.cancel;
-    TimePickers { }
+    callback hour_clicked <=> time.hour_clicked;
+    callback minute_clicked <=> time.minute_clicked;
+    callback second_clicked <=> time.second_clicked;
+
+    time := TimePickers { }
 
     btn := FunctionButton { }
 }
 
 export component DateTime inherits Rectangle {
     // set default
-    in-out property <DateTimeData> date_time:{ date:{ year:2024, month:4, day:15 }, time:{ hour:0, minute:0, second:0 } };
-    in property <[string]> months <=> header.months;
+    in-out property <DateTimeData> date_time <=> body.data;
+    in property <ChooseNames> choose_name <=> body.choose_name;
+    in property <string> time_name <=> footer.time_name;
+    in property <FunctionButtonName> buttons <=> footer.buttons;
+    callback ok(DateTimeData, string);
+    callback now() -> DateTimeData;
+    callback cancel();
+    // default now
+    now => {
+        { date:{ year:2024, month:9, day:1 } }
+    }
     width: month_pick.x + month_pick.width + 10px;
     height: footer.y + footer.height + 10px;
     background: white;
@@ -50,6 +54,9 @@ export component DateTime inherits Rectangle {
         change(num) => {
             date_time.date.year = num;
         }
+        clicked => {
+            body.show_cont = ShowController.Year
+        }
     }
 
     month_pick := MonthPickers {
@@ -59,55 +66,66 @@ export component DateTime inherits Rectangle {
         min_back() => {
             date_time.date.year -= 1;
             date_time.date.month = self.max_limit.num;
-            year_pick.num = date_time.date.year;
-            self.num = date_time.date.month;
         }
         max_next() => {
             date_time.date.year += 1;
             date_time.date.month = self.min_limit.num;
-            year_pick.num = date_time.date.year;
-            self.num = date_time.date.month;
         }
         change(num) => {
             date_time.date.month = num;
         }
+        clicked => {
+            body.show_cont = ShowController.Month;
+        }
     }
 
-    header := Header {
+    body := ChooseController {
         width: month_pick.x + month_pick.width - year_pick.x;
-        height: month_pick.height;
         x: year_pick.x;
-        y: self.height + month_pick.y + 5px;
-    }
-
-    body := DateTimeBody {
-        width: header.width;
-        x: header.x;
-        y: header.y + header.height + 5px;
+        y: month_pick.height + month_pick.y + 5px;
         start_week: get_start_week();
         max_day: get_month_last_day();
-        day: date_time.date.day;
-        clicked(num) => {
-            date_time.date.day = num;
-        }
     }
 
     footer := Footer {
         width: body.width;
         x: body.x;
         y: body.y + body.height + 5px;
-        // TODO under development
+        hour_active: body.show_cont == ShowController.Hour;
+        minute_active: body.show_cont == ShowController.Minute;
+        second_active: body.show_cont == ShowController.Second;
+        data: {
+            hour:{ num:date_time.time.hour, str:get_time_str(date_time.time.hour) },
+            minute:{ num:date_time.time.minute, str:get_time_str(date_time.time.minute) },
+            second:{ num:date_time.time.second, str:get_time_str(date_time.time.second) },
+        };
+        hour_clicked => {
+            body.show_cont = ShowController.Hour;
+        }
+        minute_clicked => {
+            body.show_cont = ShowController.Minute;
+        }
+        second_clicked => {
+            body.show_cont = ShowController.Second;
+        }
         ok => {
-            debug(@tr("{}-{}-{} {}:{}:{}",date_time.date.year,date_time.date.month,date_time.date.day,date_time.time.hour,date_time.time.minute,date_time.time.second));
+            ok(date_time,@tr("{}-{}-{} {}:{}:{}",date_time.date.year,get_time_str(date_time.date.month),get_time_str(date_time.date.day),get_time_str(date_time.time.hour),get_time_str(date_time.time.minute),get_time_str(date_time.time.second)));
         }
         now => {
-            debug(@tr("{}-{}-{} {}:{}:{}",date_time.date.year,date_time.date.month,date_time.date.day,date_time.time.hour,date_time.time.minute,date_time.time.second));
+            date_time = now();
         }
         cancel => {
-            debug(@tr("{}-{}-{} {}:{}:{}",date_time.date.year,date_time.date.month,date_time.date.day,date_time.time.hour,date_time.time.minute,date_time.time.second));
+            cancel();
         }
     }
 
+    // get time str, ensure that two digits are displayed
+    function get_time_str(time: int) -> string {
+        if time > 9 {
+            return time;
+        }
+        @tr("0{}",time)
+    }
     // get month days
     function get_month_last_day() -> int {
         if is_31(date_time.date.month) {

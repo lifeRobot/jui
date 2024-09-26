@@ -9,12 +9,10 @@ export component DrawerCommon {
     width: 50%;
     height: 50%;
 
-    animate width,height,x,y {
-         duration: 300ms;
-    }
-
-    @children
+    animate width, height, x, y { duration: 300ms; }
 
     // fix that triggers the click effect of covered layer components
-    touch:= TouchArea {}
+    touch := TouchArea { }
+
+    @children
 }

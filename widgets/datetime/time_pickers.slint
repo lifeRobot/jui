@@ -1,5 +1,16 @@
 import { ButtonRound } from "../button/button_round.slint";
 
+export struct TimeType {
+    num:int,
+    str:string,
+}
+
+export struct TimeData {
+    hour:TimeType,
+    minute:TimeType,
+    second:TimeType,
+}
+
 component TimeButton inherits ButtonRound {
     y: 0;
     width: 15px;
@@ -19,6 +30,13 @@ component TimeSpace inherits Rectangle {
 
 export component TimePickers {
     in property <string> name:"time";
+    in property <TimeData> data;
+    in property <bool> hour_active;
+    in property <bool> minute_active;
+    in property <bool> second_active;
+    callback hour_clicked();
+    callback minute_clicked();
+    callback second_clicked();
 
     txt := Rectangle {
         x: 0;
@@ -39,7 +57,11 @@ export component TimePickers {
         border-color: #80808050;
         hour := TimeButton {
             x: 1px;
-            text: "00";
+            active: hour_active;
+            text: data.hour.str;
+            clicked => {
+                hour_clicked();
+            }
         }
 
         hour_space := TimeSpace {
@@ -48,7 +70,11 @@ export component TimePickers {
 
         minute := TimeButton {
             x: hour_space.x + 2px;
-            text: "00";
+            active: minute_active;
+            text: data.minute.str;
+            clicked => {
+                minute_clicked();
+            }
         }
 
         minute_space := TimeSpace {
@@ -57,7 +83,11 @@ export component TimePickers {
 
         TimeButton {
             x: minute_space.x + 2px;
-            text: "00";
+            active: second_active;
+            text: data.second.str;
+            clicked => {
+                second_clicked();
+            }
         }
     }
 }

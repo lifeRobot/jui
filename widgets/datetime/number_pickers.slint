@@ -1,4 +1,5 @@
-import { ButtonImg } from "../button/button_img.slint";
+import { ButtonLeft } from "../button/button_left.slint";
+import { ButtonRight } from "../button/button_right.slint";
 import { Button } from "../button/button.slint";
 
 /// number limit
@@ -16,24 +17,17 @@ export component NumberPickers inherits Rectangle {
     callback change(int);
     callback min_back(int);
     callback max_next(int);
-    left := ButtonImg {
+    callback clicked <=> cont.clicked;
+    left := ButtonLeft {
         x: 0;
         y: 0;
         width: root.height;
-        height: root.height;
-        img: @image-url("../icons/dropdown.svg");
-        color: #80808050;
-        hover_color: #80808030;
-        rotate: 90deg;
-        img_x: 2px;
-        plain: true;
         clicked => {
             if min_limit.enable && min_limit.num >= num {
                 min_back(num);
                 return;
             }
-            num -= 1;
-            change(num)
+            change(num - 1)
         }
     }
 
@@ -47,24 +41,16 @@ export component NumberPickers inherits Rectangle {
         text: num;
     }
 
-    right := ButtonImg {
+    right := ButtonRight {
         x: root.height + 50px;
         y: 0;
         width: root.height;
-        height: root.height;
-        img: @image-url("../icons/dropdown.svg");
-        color: #80808050;
-        hover_color: #80808030;
-        rotate: -90deg;
-        img_x: 8px;
-        plain: true;
         clicked => {
             if max_limit.enable && max_limit.num <= num {
                 max_next(num);
                 return;
             }
-            num += 1;
-            change(num)
+            change(num + 1)
         }
     }
 }

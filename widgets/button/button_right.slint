@@ -1,0 +1,7 @@
+import { ButtonDown } from "./button_down.slint";
+
+export component ButtonRight inherits ButtonDown {
+    rotate: -90deg;
+    img_x: 8px;
+    img_y: (self.width - self.img_width) / 2;
+}

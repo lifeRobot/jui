@@ -1,5 +1,11 @@
 import { Button } from "../button/button.slint";
 
+export struct FunctionButtonName {
+    ok:string,
+    now:string,
+    cancel:string,
+}
+
 component FunctionButtonBase inherits Button {
     height: 25px;
     border_radius: 0;
@@ -10,26 +16,26 @@ component FunctionButtonBase inherits Button {
 }
 
 export component FunctionButton inherits HorizontalLayout {
-    in property <[string]> buttons:["Cancel", "Now", "Ok"];
+    in property <FunctionButtonName> buttons:{ ok:"Ok", now:"Now", cancel:"Cancel" };
     callback ok();
     callback now();
     callback cancel();
     FunctionButtonBase {
-        text: buttons[0];
+        text: buttons.cancel;
         clicked => {
             cancel()
         }
     }
 
     FunctionButtonBase {
-        text: buttons[1];
+        text: buttons.now;
         clicked => {
             now()
         }
     }
 
     FunctionButtonBase {
-        text: buttons[2];
+        text: buttons.ok;
         clicked => {
             ok();
         }

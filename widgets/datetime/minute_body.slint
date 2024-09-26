@@ -1,0 +1,30 @@
+import { ChooseHeader } from "./choose_header.slint";
+import { NumberRound } from "./common_body.slint";
+
+export component MinuteBody inherits Rectangle {
+    in property <string> name:"Minute";
+    in-out property <int> minute:0;
+    callback clicked(int);
+    header := ChooseHeader {
+        name: name;
+        value: minute;
+        y: 0;
+    }
+
+    VerticalLayout {
+        height: 180px;
+        y: header.height + 5px;
+        for i in 6: HorizontalLayout {
+            for j in 10: Rectangle {
+                NumberRound {
+                    width: 20px;
+                    active: self.num == minute;
+                    num: i * 10 + j;
+                    clicked => {
+                        clicked(self.num)
+                    }
+                }
+            }
+        }
+    }
+}

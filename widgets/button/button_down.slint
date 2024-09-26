@@ -1,0 +1,10 @@
+import { ButtonImg } from "./button_img.slint";
+
+export component ButtonDown inherits ButtonImg {
+    img: @image-url("../icons/dropdown.svg");
+    color: #80808050;
+    hover_color: #80808030;
+    img_y: (self.width - self.img_width) - 2px;
+    plain: true;
+    height: self.width;
+}

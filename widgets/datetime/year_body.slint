@@ -1,0 +1,49 @@
+import { ChooseHeader } from "./choose_header.slint";
+import { ButtonUp } from "../button/button_up.slint";
+import { ButtonDown } from "../button/button_down.slint";
+import { NumberRound } from "./common_body.slint";
+
+export component YearBody inherits Rectangle {
+    in property <string> name:"Year";
+    in-out property <int> year:2024;
+    private property <int> page:0;
+    callback clicked(int);
+    header := ChooseHeader {
+        name: name;
+        value: year;
+        y: 0;
+    }
+
+    up := ButtonUp {
+        x: header.width - self.width * 2 - 5px;
+        y: 0;
+        clicked => {
+            page -= 3;
+        }
+    }
+
+    down := ButtonDown {
+        x: header.width - self.width;
+        y: 0;
+        clicked => {
+            page += 3;
+        }
+    }
+
+    VerticalLayout {
+        height: 180px;
+        y: header.height + 5px;
+        for i in 4: HorizontalLayout {
+            for j in 3: Rectangle {
+                NumberRound {
+                    width: 40px;
+                    active: self.num == year;
+                    num: year + i * 3 + j - 7 + page;
+                    clicked => {
+                        clicked(self.num)
+                    }
+                }
+            }
+        }
+    }
+}

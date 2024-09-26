@@ -1,0 +1,51 @@
+import { ChooseHeader } from "./choose_header.slint";
+import { NumberRound } from "./common_body.slint";
+
+export component HourBody inherits Rectangle {
+    in property <string> name:"Hour";
+    in-out property <int> hour:0;
+    callback clicked(int);
+    header := ChooseHeader {
+        name: name;
+        value: hour;
+        y: 0;
+    }
+
+    VerticalLayout {
+        height: 180px;
+        y: header.height + 5px;
+        // generate the first 18 digits
+        for i in 3: HorizontalLayout {
+            for j in 6: Rectangle {
+                NumberRound {
+                    active: self.num == hour;
+                    num: i * 6 + j + 1;
+                    clicked => {
+                        clicked(self.num)
+                    }
+                }
+            }
+        }
+        // generate the last 6 digits
+        HorizontalLayout {
+            for j in 5: Rectangle {
+                NumberRound {
+                    active: self.num == hour;
+                    num: 19 + j;
+                    clicked => {
+                        clicked(self.num)
+                    }
+                }
+            }
+            Rectangle {
+                NumberRound {
+                    active: self.num == hour;
+                    num: 0;
+                    clicked => {
+                        clicked(self.num)
+                    }
+                }
+            }
+        }
+    }
+}

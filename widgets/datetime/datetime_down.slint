@@ -1,0 +1,15 @@
+import { DrawerTop } from "../drawer/drawer_top.slint";
+import { DateTime,DateTimeData,ChooseNames,FunctionButtonName } from "./datetime.slint";
+
+export component DateTimeDown inherits DrawerTop {
+    in property <DateTimeData> date_time <=> date_time.date_time;
+    in property <ChooseNames> choose_name <=> date_time.choose_name;
+    in property <string> time_name <=> date_time.time_name;
+    in property <FunctionButtonName> buttons <=> date_time.buttons;
+    callback ok <=> date_time.ok;
+    callback now <=> date_time.now;
+    callback cancel <=> date_time.cancel;
+    width: date_time.width;
+    height: date_time.height;
+    date_time := DateTime { }
+}

@@ -1,0 +1,25 @@
+import { Date,Time } from "std-widgets.slint";
+
+export struct DateTimeData {
+    date: Date,
+    time: Time,
+}
+
+export enum ShowController {
+    Year,Month,Day,Hour,Minute,Second
+}
+
+export struct ChooseNames {
+    year:string,
+    month:string,
+    hour:string,
+    minute:string,
+    second:string,
+    monday:string,
+    tuesday:string,
+    wednesday:string,
+    thursday:string,
+    friday:string,
+    saturday:string,
+    sunday:string,
+}
