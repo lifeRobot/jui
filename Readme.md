@@ -29,6 +29,11 @@ more function coming soon
 | DrawerBottom    | ```import { DrawerBottom } from "@jui/drawer/drawer_bottom.slint";```       |
 | Tabs            | ```import { Tabs } from "@jui/nav/tabs.slint";```                           |
 | ComboBox        | ```import { ComboBox } from "@jui/combobox/combobox.slint";```              |
+| DateTime        | ```import { DateTime } from "@jui/datetime/datetime.slint";```              |
+| DateTimeLeft    | ```import { DateTimeLeft } from "@jui/datetime/datetime_left.slint";```     |
+| DateTimeRight   | ```import { DateTimeRight } from "@jui/datetime/datetime_right.slint";```   |
+| DateTimeUp      | ```import { DateTimeUp } from "@jui/datetime/datetime_up.slint";```         |
+| DateTimeDown    | ```import { DateTimeDown } from "@jui/datetime/datetime_down.slint";```     |
 
 ### Supported data
 
@@ -48,16 +53,18 @@ more function coming soon
 |-----------|----------------------------------------------------------------|
 | IconClose | ```import { IconClose } from "@jui/icons/icon_close.slint";``` |
 
-### [SurrealismUI](https://github.com/Surrealism-All/SurrealismUI) example
+[//]: # (SurrealismUI example)
+<details open>
+<summary>SurrealismUI example </summary>
 
 features enable surrealism_ui, Cargo.toml file like example:
 
 ```toml
 [dependencies]
-slint = "1.7.0"
+slint = "1.8.0"
 
 [build-dependencies]
-jui = { version = "0.2.0", features = ["surrealism_ui"] }
+jui = { version = "0.2.1", features = ["surrealism_ui"] }
 ```
 
 use SurrealismUI in you slint file:
@@ -74,7 +81,9 @@ export component App inherits Window {
 }
 ```
 
-more SurrealismUI see: [SurrealismUI wiki](https://github.com/Surrealism-All/SurrealismUI/wiki)  
+more SurrealismUI see: [SurrealismUI wiki](https://github.com/Surrealism-All/SurrealismUI/wiki)
+or [SurrealismUI Book](https://surrealism-all.github.io/SurrealismUI.github.io/)
+
 if you want use alias import SurrealismUI, example for this build.rs:
 
 ```rust
@@ -82,21 +91,28 @@ use jui::surrealism_ui::SurrealismUI;
 
 pub fn main() {
     let separator = jui::cbsk_file::separator;
+    // alias import is sui, example import: 
+    // import { SButton } from "@sui/button/index.slint";
     let surrealism_ui = SurrealismUI::new_with_alias("sui");
     jui::compile_with_surrealism_ui(format!("view{separator}main.slint"), surrealism_ui).unwrap();
 }
 ```
 
-### Jui Button example
+</details>
+
+
+[//]: # (jui button example)
+<details>
+    <summary>Jui Button example</summary>
 
 Cargo.toml file :
 
 ```toml
 [dependencies]
-slint = "1.7.0"
+slint = "1.8.0"
 
 [build-dependencies]
-jui = "0.2.0"
+jui = "0.2.1"
 ```
 
 main.rs file :
@@ -134,6 +150,8 @@ export component App inherits Window {
     }
 }
 ```
+
+</details>
 
 ### More example
 

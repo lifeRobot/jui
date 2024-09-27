@@ -45,12 +45,13 @@ export component UnderlineInput {
     ]
 
     Rectangle {
-        input:= Input {
+        input := Input {
             x: 10px;
             y: 0;
             width: parent.width - 20px;
             placeholder_color: placeholder_color;
         }
+
         Rectangle {
             y: root.height;
             width: parent.width;
@@ -60,7 +61,7 @@ export component UnderlineInput {
     }
 
     // mouse hover attr and etc
-    touch:= TouchArea {
+    touch := TouchArea {
         mouse-cursor: mouse_cursor;
         visible: true;
 

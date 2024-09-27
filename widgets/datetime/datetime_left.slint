@@ -1,6 +1,8 @@
 import { DrawerRight } from "../drawer/drawer_right.slint";
 import { DateTime,DateTimeData,ChooseNames,FunctionButtonName } from "./datetime.slint";
 
+export { DateTimeData,ChooseNames,FunctionButtonName }
+
 export component DateTimeLeft inherits DrawerRight {
     in property <DateTimeData> date_time <=> date_time.date_time;
     in property <ChooseNames> choose_name <=> date_time.choose_name;
