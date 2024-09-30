@@ -1,5 +1,5 @@
 import { Date,Time } from "std-widgets.slint";
-import { DateTimeData,ShowController,ChooseNames } from "./datetime_data.slint";
+import { DateTimeData,ShowController,ChooseNames } from "../data/datetime_data.slint";
 import { YearPickers } from "./year_pickers.slint";
 import { MonthPickers } from "month_pickers.slint";
 import { ChooseController } from "choose_controller.slint";
@@ -109,7 +109,7 @@ export component DateTime inherits Rectangle {
             body.show_cont = ShowController.Second;
         }
         ok => {
-            ok(date_time,@tr("{}-{}-{} {}:{}:{}",date_time.date.year,get_time_str(date_time.date.month),get_time_str(date_time.date.day),get_time_str(date_time.time.hour),get_time_str(date_time.time.minute),get_time_str(date_time.time.second)));
+            ok(date_time,get_date_time_str(date_time));
         }
         now => {
             date_time = now();
@@ -119,6 +119,10 @@ export component DateTime inherits Rectangle {
         }
     }
 
+    // get yyyy-MM-dd HH:mm:ss format time
+    public function get_date_time_str(time: DateTimeData) -> string {
+        @tr("{}-{}-{} {}:{}:{}",time.date.year,get_time_str(time.date.month),get_time_str(time.date.day),get_time_str(time.time.hour),get_time_str(time.time.minute),get_time_str(time.time.second))
+    }
     // get time str, ensure that two digits are displayed
     function get_time_str(time: int) -> string {
         if time > 9 {

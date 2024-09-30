@@ -14,4 +14,8 @@ export component DateTimeRight inherits DrawerLeft {
     width: date_time.width;
     height: date_time.height;
     date_time := DateTime { }
+
+    public function get_date_time_str(time: DateTimeData) -> string {
+        date_time.get_date_time_str(time)
+    }
 }

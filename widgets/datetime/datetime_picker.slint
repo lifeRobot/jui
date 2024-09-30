@@ -1,0 +1,220 @@
+import { Position } from "../data/position.slint";
+import { DateTimeData,ChooseNames } from "../data/datetime_data.slint";
+import { FunctionButtonName } from "./function_button.slint";
+import { DateTimeUp } from "../datetime/datetime_up.slint";
+import { DateTimeDown } from "../datetime/datetime_down.slint";
+import { DateTimeLeft } from "../datetime/datetime_left.slint";
+import { DateTimeRight } from "../datetime/datetime_right.slint";
+import { TouchSpaceEnter } from "../event/touch_space_enter.slint";
+
+export { DateTimeData,ChooseNames,FunctionButtonName }
+
+// date time str
+component DateTimeStr inherits Rectangle {
+    in property <string> date_time;
+    in property <bool> is_placeholder:true;
+    in property <string> placeholder_text:"click to select time";
+    in property <brush> line_color:black;
+    in property <brush> placeholder_color:gray;
+    in property <brush> text_color:black;
+    in property <length> font_size:date_str.height - 5px;
+    out property <bool> has_hover:touch.has_hover;
+    callback clicked <=> touch.clicked;
+    date_str := Rectangle {
+        x: 10px;
+        y: 0px;
+        width: root.width - 20px;
+        Text {
+            x: 0px;
+            font-size: font_size;
+            text: is_placeholder ? placeholder_text : date_time;
+            color: is_placeholder ? placeholder_color : text_color;
+        }
+    }
+
+    line := Rectangle {
+        y: date_str.height;
+        height: 1px;
+        background: line_color;
+        width: root.width;
+    }
+
+    touch := TouchSpaceEnter { }
+}
+
+export component DateTimePicker {
+    in property <Position> position:Position.Bottom;
+    in-out property <DateTimeData> date_time;
+    in property <string> time_name:"time";
+    in property <ChooseNames> choose_name:{
+        year:"Year",
+        month:"Month",
+        hour:"Hour",
+        minute:"Minute",
+        second:"Second",
+        monday:"Mon",
+        tuesday:"Tue",
+        wednesday:"Wed",
+        thursday:"Thu",
+        friday:"Fri",
+        saturday:"Sat",
+        sunday:"Sun"
+    };
+    in property <FunctionButtonName> buttons:{ ok:"Ok", now:"Now", cancel:"Cancel" };
+    in property <string> placeholder_text <=> picker.placeholder_text;
+    in property <length> font_size <=> picker.font_size;
+    in property <brush> color <=> picker.text_color;
+    in property <brush> placeholder_color <=> picker.placeholder_color;
+    in property <brush> hover_color:black;
+    in property <brush> underline_color:gray;
+    out property <string> value <=> picker.date_time;
+    private property <DateTimeData> old_date_time:date_time;
+    private property <brush> logic_color:black;
+    private property <bool> is_open:false;
+    private property <DateTimeData> now_;
+    callback now() -> DateTimeData;
+    // default now is 2024-09-01 00:00:00
+    now => {
+        { date:{ year:2024, month:9, day:1 } }
+    }
+    states [
+        is_hover when picker.has_hover || is_open: {
+            picker.line_color: hover_color;
+        }
+    ]
+    init => {
+        if date_time.date.year == 0 {
+            return;
+        }
+        value = dt_down.get_date_time_str(date_time);
+        picker.is_placeholder = false;
+    }
+    picker := DateTimeStr {
+        x: 0;
+        y: 0;
+        line_color: underline_color;
+        width: max(dt_up.width,root.width);
+        height: max(22px,root.height);
+        clicked => {
+            if date_time.date.year == 0 {
+                date_time = now();
+            }
+            open();
+        }
+    }
+
+    dt_up := DateTimeUp {
+        date_time: date_time;
+        time_name: time_name;
+        choose_name: choose_name;
+        buttons: buttons;
+        x: 0;
+        y: -self.height - 2px;
+        ok(time, time_str) => {
+            ok(time,time_str);
+        }
+        now => {
+            dt_now();
+            now_
+        }
+        cancel => {
+            cancel()
+        }
+    }
+
+    dt_down := DateTimeDown {
+        date_time: date_time;
+        time_name: time_name;
+        choose_name: choose_name;
+        buttons: buttons;
+        x: 0;
+        y: picker.height + 2px;
+        ok(time, time_str) => {
+            ok(time,time_str);
+        }
+        now => {
+            dt_now();
+            now_
+        }
+        cancel => {
+            cancel()
+        }
+    }
+
+    dt_left := DateTimeLeft {
+        date_time: date_time;
+        time_name: time_name;
+        choose_name: choose_name;
+        buttons: buttons;
+        x: -self.width - 2px;
+        ok(time, time_str) => {
+            ok(time,time_str);
+        }
+        now => {
+            dt_now();
+            now_
+        }
+        cancel => {
+            cancel()
+        }
+    }
+
+    dt_right := DateTimeRight {
+        date_time: date_time;
+        time_name: time_name;
+        choose_name: choose_name;
+        buttons: buttons;
+        x: picker.width + 2px;
+        ok(time, time_str) => {
+            ok(time,time_str);
+        }
+        now => {
+            dt_now();
+            now_
+        }
+        cancel => {
+            cancel()
+        }
+    }
+
+    function ok(time: DateTimeData, time_str: string) {
+        picker.is_placeholder = false;
+        value = time_str;
+        close();
+    }
+    function dt_now() {
+        now_ = now();
+        picker.is_placeholder = false;
+        value = dt_down.get_date_time_str(now_);
+        close();
+    }
+    function cancel() {
+        picker.is_placeholder = true;
+        value = "";
+    }
+    // open the picker
+    public function open() {
+        is_open = true;
+        if Position.Top == position {
+            dt_up.open();
+        }
+        if Position.Bottom == position {
+            dt_down.open();
+        }
+        if Position.Left == position {
+            dt_left.open();
+        }
+        if Position.Right == position {
+            dt_right.open();
+        }
+    }
+
+    // close the picker
+    public function close() {
+        is_open = false;
+        dt_up.close();
+        dt_down.close();
+        dt_left.close();
+        dt_right.close();
+    }
+}
