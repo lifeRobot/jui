@@ -73,6 +73,7 @@ export component DateTimePicker {
     private property <bool> is_open:false;
     private property <DateTimeData> now_;
     callback now() -> DateTimeData;
+    callback clicked();
     // default now is 2024-09-01 00:00:00
     now => {
         { date:{ year:2024, month:9, day:1 } }
@@ -96,6 +97,7 @@ export component DateTimePicker {
         width: max(dt_up.width,root.width);
         height: max(22px,root.height);
         clicked => {
+            clicked();
             if date_time.date.year == 0 {
                 date_time = now();
             }
