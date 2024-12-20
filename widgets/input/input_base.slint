@@ -1,5 +1,5 @@
 export component InputBase {
-    in property <string> text <=> input.text;
+    in-out property <string> text <=> input.text;
     in property <brush> color;
     in property <length> font_size <=> input.font-size;
     in property <int> font_weight <=> input.font-weight;
@@ -25,7 +25,7 @@ export component InputBase {
         clip: true;
 
         // placeholder
-        placeholder:= Text {
+        placeholder := Text {
             width: 100%;
             height: 100%;
             vertical-alignment: center;
@@ -39,7 +39,7 @@ export component InputBase {
         }
 
         // input
-        input:= TextInput {
+        input := TextInput {
             property <length> computed-x;
 
             x: min(0px, max(parent.width - self.width - self.text-cursor-width, self.computed-x));
@@ -57,9 +57,13 @@ export component InputBase {
                 }
             }
 
-            accepted => { accepted(self.text); }
+            accepted => {
+                accepted(self.text);
+            }
 
-            edited => { edited(self.text); }
+            edited => {
+                edited(self.text);
+            }
         }
     }
 }

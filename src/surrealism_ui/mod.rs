@@ -10,8 +10,8 @@ pub mod surrealism_url;
 
 /// surrealism ui config
 pub struct SurrealismUI {
-    /// SurrealismUI download url, default is (surrealism_ui 0.3.4)<br />
-    /// https://github.com/Surrealism-All/SurrealismUI/releases/download/v0.3.4/surrealism-ui_0.3.4.zip
+    /// SurrealismUI download url, default is (surrealism_ui 0.5.1)<br />
+    /// https://github.com/Surrealism-All/SurrealismUI/releases/download/v0.5.1/surrealism-ui_0.5.1.zip
     url: &'static str,
     /// SurrealismUI doanload and decompression directory, default is<br />
     /// env::var_os("OUT_DIR").join("jui")
