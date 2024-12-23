@@ -46,7 +46,7 @@ pub fn compile_alias_with_surrealism_ui(path: impl AsRef<Path>, alias: String, s
 }
 
 /// Compile the .slint file and generate rust code with custom jui config
-pub fn compile_with_jui_config(path: impl AsRef<Path>, jui_config: jui_config::JuiConfig) -> Result<(), CompileError> {
+pub fn compile_with_jui_config(path: impl AsRef<Path>, jui_config: JuiConfig) -> Result<(), CompileError> {
     let jui_widgets = env!("JUI_WIDGETS", "JUI_WIDGETS is None");
     let jui_widgets = PathBuf::from(jui_widgets);
 

@@ -1,10 +1,10 @@
+use crate::surrealism_ui::surrealism_url::SurrealismUrl;
+use cbsk_base::anyhow;
 use std::collections::HashMap;
 use std::env;
 use std::fs::File;
 use std::io::Write;
 use std::path::PathBuf;
-use cbsk_base::anyhow;
-use crate::surrealism_ui::surrealism_url::SurrealismUrl;
 
 pub mod surrealism_url;
 
@@ -94,8 +94,18 @@ impl Default for SurrealismUI {
 impl SurrealismUI {
     /// build surrealism ui library path
     pub fn build_library_path(&self) -> HashMap<String, PathBuf> {
-        let file = self.try_download().expect(&format!("download surrealism_ui[{:?}] to path[{:?}] fail", self.url, self.out_dir));
-        let out_dir = self.try_extract(file).expect(&format!("extract surrealism_ui[{:?}] fail", self.out_dir));
+        let file = self.try_download().expect(&format!(
+            "download surrealism_ui[{:?}] to path[{:?}] fail",
+            self.url, self.out_dir
+        ));
+        // v start
+        let out_dir = self
+            .try_extract_current(file)
+            .expect(&format!("extract surrealism_ui[{:?}] fail", self.out_dir));
+        // surrealism_ui start
+        /*let out_dir = self
+        .try_extract(file)
+        .expect(&format!("extract surrealism_ui[{:?}] fail", self.out_dir));*/
 
         let mut index_slint = out_dir.join("index");
         index_slint.set_extension("slint");
@@ -103,11 +113,13 @@ impl SurrealismUI {
         HashMap::from([
             (format!("{}_all", self.alias), index_slint),
             (format!("{}_icons", self.alias), out_dir.join("icons")),
-            (self.alias.clone(), out_dir.join("src"))
+            (self.alias.clone(), out_dir.join("src")),
         ])
     }
 
-    /// try extract surrealism ui
+    /// try extract surrealism ui<br />
+    /// extract to the specified directory
+    #[allow(dead_code)]
     fn try_extract(&self, file: File) -> zip::result::ZipResult<PathBuf> {
         let out_dir = self.out_dir.join(surrealism_url::EXTRACT_NAME);
         if out_dir.exists() {
@@ -115,6 +127,18 @@ impl SurrealismUI {
         }
 
         zip::ZipArchive::new(file)?.extract(&out_dir)?;
+        Ok(out_dir)
+    }
+
+    /// try extract surrealism ui<br />
+    /// extract to current directory
+    fn try_extract_current(&self, file: File) -> zip::result::ZipResult<PathBuf> {
+        let out_dir = self.out_dir.join(surrealism_url::EXTRACT_NAME);
+        if out_dir.exists() {
+            return Ok(out_dir);
+        }
+
+        zip::ZipArchive::new(file)?.extract(&self.out_dir)?;
         Ok(out_dir)
     }
 

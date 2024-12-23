@@ -1,6 +1,6 @@
 [package]
 name = "jui"
-version = "0.2.3"
+version = "0.2.4"
 edition = "2021"
 description = "jui is a ui set based on slint"
 readme = "Readme.md"
@@ -13,7 +13,7 @@ repository = "https://github.com/lifeRobot/jui"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-slint-build = "1.9.0"
+slint-build = "1.9.1"
 cbsk_file = "2.0.6"
 #jui_file = "0.1.25"
 #jui_file = { path = "./libs/jui_file" }
