@@ -13,13 +13,15 @@ export component UnderlineInput {
     in property <string> placeholder_text <=> input.placeholder_text;
     in property <brush> placeholder_color: gray;
     in property <image> prefix_icon <=> input.prefix_icon;
+    // the left and right blank space, default is 5px
+    in property <length> blank_space: 5px;
 
     // own attr
     // underline color default gray
     in property <brush> underline_color: gray;
     // underline color of mouse hover or focus
     in property <brush> hover_color;
-    in property <MouseCursor> mouse_cursor: MouseCursor.text;
+    in-out property <MouseCursor> mouse_cursor: MouseCursor.text;
     // if verify=false, underline color will be red
     in property <bool> verify: true;
     // reserved attr, coming soon
@@ -27,6 +29,8 @@ export component UnderlineInput {
 
     callback accepted <=> input.accepted;
     callback edited <=> input.edited;
+    callback key-pressed <=> input.key-pressed;
+    callback key-released <=> input.key-released;
     callback clicked();
 
     forward-focus: input;
@@ -44,22 +48,6 @@ export component UnderlineInput {
         }
     ]
 
-    Rectangle {
-        input := Input {
-            x: 10px;
-            y: 0;
-            width: parent.width - 20px;
-            placeholder_color: placeholder_color;
-        }
-
-        Rectangle {
-            y: root.height;
-            width: parent.width;
-            height: 1px;
-            background: logic_color;
-        }
-    }
-
     // mouse hover attr and etc
     touch := TouchArea {
         mouse-cursor: mouse_cursor;
@@ -68,6 +56,24 @@ export component UnderlineInput {
         clicked => {
             input.focus();
             clicked();
+        }
+    }
+
+    Rectangle {
+        width: root.width;
+        height: root.height;
+        input := Input {
+            x: blank_space;
+            y: 0;
+            width: parent.width - blank_space * 2;
+            placeholder_color: placeholder_color;
+        }
+
+        Rectangle {
+            y: root.height;
+            width: parent.width;
+            height: 1px;
+            background: logic_color;
         }
     }
 }

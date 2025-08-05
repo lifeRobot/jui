@@ -22,23 +22,28 @@ export component DrawerRight inherits DrawerCommon {
         @children
     }
 
+    // open drawer
     public function open() {
         change_show(true);
     }
 
+    // close drawer
     public function close() {
         change_show(false);
     }
 
+    // toggle drawer
     public function toggle() {
         change_show(!root.show);
     }
 
+    // open or close drawer
     public function change_show(show:bool) {
         root.show = show;
         change_width();
     }
 
+    // change width, will open or close drawer
     function change_width() {
         if root.show {
             root.width = logic_width;

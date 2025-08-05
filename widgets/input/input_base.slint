@@ -16,12 +16,14 @@ export component InputBase {
 
     callback accepted(string);
     callback edited(string);
+    callback key-pressed <=> input.key-pressed;
+    callback key-released <=> input.key-released;
 
     forward-focus: input;
 
     Rectangle {
         min-height: input.preferred-height;
-        min-width: max(50px, placeholder.min-width);
+        // min-width: max(10px, placeholder.min-width);
         clip: true;
 
         // placeholder
@@ -46,6 +48,7 @@ export component InputBase {
             width: max(parent.width - self.text-cursor-width, self.preferred-width);
             height: max(root.height,self.font_size + 8px);
             vertical-alignment: center;
+            horizontal-alignment: left;
             single-line: true;
             color: color;
 

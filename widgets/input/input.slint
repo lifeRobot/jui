@@ -18,10 +18,12 @@ export component Input {
 
     callback accepted <=> input_base.accepted;
     callback edited <=> input_base.edited;
+    callback key-pressed <=> input_base.key-pressed;
+    callback key-released <=> input_base.key-released;
 
     vertical-stretch: 0;
     horizontal-stretch: 1;
-    min-width: max(160px, h_layout.min-width);
+    // min-width: max(10px, h_layout.min-width);
     min-height: max(22px, h_layout.min-height);
     forward-focus: input_base;
 
@@ -33,17 +35,17 @@ export component Input {
         }
     ]
 
-    if (prefix_icon.width != 0 && prefix_icon.height != 0) :Image {
+    if (prefix_icon.width != 0 && prefix_icon.height != 0):Image {
         x: h_layout.padding_left;
         source: prefix_icon;
         width: font_size + 1px;
     }
-    input_rect:= Rectangle {
+    input_rect := Rectangle {
         x: 0;
         width: parent.width - self.x;
 
-        h_layout:= HorizontalLayout {
-            input_base:= InputBase {
+        h_layout := HorizontalLayout {
+            input_base := InputBase {
                 selection-background-color: #007AFF4D;
                 selection-foreground-color: self.color;
                 placeholder-color: placeholder_color;
