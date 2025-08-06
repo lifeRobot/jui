@@ -16,13 +16,17 @@ export component Tabs {
     callback clicked(TabsData);
 
     // line default width
-    txt:= Text {text:data[0].text;font_size: font_size;visible: false;}
+    txt := Text {
+        text: data[0].text;
+        font_size: font_size;
+        visible: false;
+    }
 
-    cont:= HorizontalLayout {
+    cont := HorizontalLayout {
         alignment: start;
         spacing: spacing;
 
-        for tab in data: rect:= Rectangle {
+        for tab in data: rect := Rectangle {
             Text {
                 text: tab.text;
                 color: id == tab.id ? active_color : color;
@@ -40,18 +44,15 @@ export component Tabs {
                 }
             }
         }
-
     }
 
-    line:= Rectangle {
+    line := Rectangle {
         x: 0px;
         y: cont.height + 5px;
         width: txt.width;
         height: 2px;
         background: active_color;
 
-        animate x,width {
-             duration: 300ms;
-        }
+        animate x, width { duration: 300ms; }
     }
 }

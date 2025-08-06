@@ -1,0 +1,159 @@
+import { DrawerCommon } from "drawer_common.slint";
+import { Position } from "../data/position.slint";
+
+// re export use data
+export { Position }
+
+// drawer by custom, support Position, default is Postiton.Right
+export component DrawerCustom inherits DrawerCommon {
+    private property <length> logic_width;
+    private property <length> logic_x;
+    private property <length> logic_height;
+    private property <length> logic_y;
+    private property <duration> logic_duration;
+    out property <Position> position:Position.Right;
+    width: 100%;
+    height: 100%;
+
+    cont := Rectangle {
+        background: root.background;
+        clip: true;
+
+        animate width, height { duration: 300ms; }
+
+        init => {
+            logic_width = root.width;
+            logic_height = root.height;
+            logic_x = root.x;
+            logic_y = root.y;
+            logic_duration = root.animation_animation;
+            change_data();
+        }
+
+        @children
+    }
+
+    public function open() {
+        change_show(true);
+    }
+
+    public function close() {
+        change_show(false);
+    }
+
+    public function toggle() {
+        change_show(!root.show);
+    }
+
+    public function change_show(show: bool) {
+        root.show = show;
+        change_data();
+    }
+
+    // change position
+    public function change_position(p: Position) {
+        // if position eq root.position, return
+        if root.position == p {
+            return;
+        }
+
+        // change position, and if show, return
+        root.position = p;
+        if root.show {
+            return;
+        }
+
+        // not show, change width height x and y
+        root.animation_animation = 0ms;
+        change_positon_not_show(p);
+        root.animation_animation = logic_duration;
+    }
+
+    // position state change
+    function change_positon_not_show(p: Position) {
+        if p == Position.Left {
+            root.width = 0;
+            cont.width = 0;
+            root.height = logic_height;
+            cont.height = logic_height;
+            root.x = logic_x;
+            root.y = logic_y;
+            return;
+        }
+        if p == Position.Right {
+            root.width = 0;
+            cont.width = 0;
+            root.height = logic_height;
+            cont.height = logic_height;
+            root.x = logic_x + logic_width;
+            root.y = logic_y;
+            return;
+        }
+        if p == Position.Top {
+            root.width = logic_width;
+            cont.width = logic_width;
+            root.height = 0;
+            cont.height = 0;
+            root.x = logic_x;
+            root.y = logic_y;
+            return;
+        }
+        // last is Position.Bottom
+        root.width = logic_width;
+        cont.width = logic_width;
+        root.height = 0;
+        cont.height = 0;
+        root.x = logic_x;
+        root.y = logic_y + logic_height;
+    }
+
+    function change_data() {
+        if root.show {
+            change_data_show();
+            return;
+        }
+        if root.position == Position.Left {
+            root.width = 0;
+            cont.width = 0;
+            return;
+        }
+        if root.position == Position.Right {
+            root.width = 0;
+            cont.width = 0;
+            root.x = logic_x + logic_width;
+            return;
+        }
+        if root.position == Position.Top {
+            root.height = 0;
+            cont.height = 0;
+            return;
+        }
+        // last is Position.Bottom
+        root.height = 0;
+        cont.height = 0;
+        root.y = logic_y + logic_height;
+    }
+
+    function change_data_show() {
+        if root.position == Position.Left {
+            root.width = logic_width;
+            cont.width = logic_width;
+            return;
+        }
+        if root.position == Position.Right {
+            root.width = logic_width;
+            cont.width = logic_width;
+            root.x = logic_x;
+            return;
+        }
+        if root.position == Position.Top {
+            root.height = logic_height;
+            cont.height = logic_height;
+            return;
+        }
+        // last is Position.Bottom
+        root.height = logic_height;
+        cont.height = logic_height;
+        root.y = logic_y;
+    }
+}

@@ -1,6 +1,7 @@
 export component DrawerCommon {
     in-out property <bool> show: false;
     in property <brush> background: white;
+    in-out property <duration> animation_animation:300ms;
 
     callback clicked <=> touch.clicked;
 
@@ -9,7 +10,8 @@ export component DrawerCommon {
     width: 50%;
     height: 50%;
 
-    animate width, height, x, y { duration: 300ms; }
+    animate width, height, x, y { duration: animation_animation; }
+
 
     // fix that triggers the click effect of covered layer components
     touch := TouchArea { }
