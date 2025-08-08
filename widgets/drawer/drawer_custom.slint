@@ -22,15 +22,23 @@ export component DrawerCustom inherits DrawerCommon {
         animate width, height { duration: 300ms; }
 
         init => {
-            logic_width = root.width;
-            logic_height = root.height;
-            logic_x = root.x;
-            logic_y = root.y;
-            logic_duration = root.animation_animation;
-            change_data();
+            re_init(root.width,root.height);
         }
 
         @children
+    }
+
+    // the UI may delay initialization, causing the width to be 0 or less.
+    // you can call this method again to reinitialize the drawer component after the UI is rendered
+    public function re_init(w: length, h: length) {
+        root.width = w;
+        root.height = h;
+        logic_width = w;
+        logic_height = h;
+        logic_x = root.x;
+        logic_y = root.y;
+        logic_duration = root.animation_animation;
+        change_data();
     }
 
     public function open() {

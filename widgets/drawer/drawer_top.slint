@@ -5,20 +5,26 @@ export component DrawerTop inherits DrawerCommon {
     private property <length> logic_height;
     width: 100%;
 
-    cont:= Rectangle {
+    cont := Rectangle {
         background: root.background;
         clip: true;
 
-        animate height {
-             duration: 300ms;
-        }
+        animate height { duration: 300ms; }
 
         init => {
-            logic_height = root.height;
-            change_height();
+            re_init(root.width,root.height);
         }
 
         @children
+    }
+
+    // the UI may delay initialization, causing the width to be 0 or less.
+    // you can call this method again to reinitialize the drawer component after the UI is rendered
+    public function re_init(w: length, h: length) {
+        root.width = w;
+        root.height = h;
+        logic_height = h;
+        change_height();
     }
 
     public function open() {
@@ -33,7 +39,7 @@ export component DrawerTop inherits DrawerCommon {
         change_show(!root.show);
     }
 
-    public function change_show(show:bool) {
+    public function change_show(show: bool) {
         root.show = show;
         change_height();
     }
@@ -44,7 +50,6 @@ export component DrawerTop inherits DrawerCommon {
             cont.height = logic_height;
             return;
         }
-
         root.height = 0;
         cont.height = 0;
     }
