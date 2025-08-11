@@ -1,0 +1,53 @@
+import { TouchSpaceEnter } from "../event/touch_space_enter.slint";
+
+// radio component
+export component Radio {
+    in property <string> text;
+    in-out property <bool> checked:false;
+    in property <length> font_size:14px;
+    in property <int> font_weight;
+    in property <brush> color:black;
+    in property <brush> active_color:blue;
+    // the character size in each country may be inconsistent,
+    // resulting in the font display not being centered.
+    // you can use this property to adjust the y-coordinate of the font display
+    in property <length> text_y: -font_size / 7;
+
+    width: txt.x + txt.width;
+    height: font_size;
+
+    // clicked callback
+    callback clicked();
+
+    state_rtg := Rectangle {
+        x: 0;
+        y: 0;
+        width: font_size;
+        height: font_size;
+        border-radius: font_size / 2;
+        border-color: checked ? active_color : color;
+        border-width: 1px;
+        if checked: Rectangle {
+            width: font_size / 2;
+            height: font_size / 2;
+            border-radius: font_size / 4;
+            background: active_color;
+        }
+    }
+
+    txt := Text {
+        x: state_rtg.x + state_rtg.width + 2px;
+        y: text_y;
+        text: root.text;
+        font-size: root.font_size;
+        font-weight: root.font_weight;
+        color: checked ? active_color : color;
+    }
+
+    TouchSpaceEnter {
+        clicked => {
+            root.checked = true;
+            root.clicked();
+        }
+    }
+}
