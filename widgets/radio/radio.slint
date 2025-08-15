@@ -3,6 +3,7 @@ import { TouchSpaceEnter } from "../event/touch_space_enter.slint";
 // radio component
 export component Radio {
     in property <string> text;
+    in property <bool> enable:true;
     in-out property <bool> checked:false;
     in property <length> font_size:14px;
     in property <int> font_weight;
@@ -25,13 +26,13 @@ export component Radio {
         width: font_size;
         height: font_size;
         border-radius: font_size / 2;
-        border-color: checked ? active_color : color;
+        border-color: !root.enable ? gray : checked ? active_color : color;
         border-width: 1px;
         if checked: Rectangle {
             width: font_size / 2;
             height: font_size / 2;
             border-radius: font_size / 4;
-            background: active_color;
+            background: root.enable ? active_color : gray;
         }
     }
 
@@ -41,11 +42,15 @@ export component Radio {
         text: root.text;
         font-size: root.font_size;
         font-weight: root.font_weight;
-        color: checked ? active_color : color;
+        color: !root.enable ? gray : checked ? active_color : color;
     }
 
     TouchSpaceEnter {
+        mouse_cursor: root.enable ? MouseCursor.pointer : MouseCursor.not-allowed;
         clicked => {
+            if !enable {
+                return;
+            }
             root.checked = true;
             root.clicked();
         }
