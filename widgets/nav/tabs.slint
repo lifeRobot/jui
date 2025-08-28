@@ -37,6 +37,9 @@ export component Tabs {
                 mouse-cursor: mouse_cursor;
 
                 clicked => {
+                    if id == tab.id {
+                        return;
+                    }
                     id = tab.id;
                     line.x = rect.x;
                     line.width = rect.width;
