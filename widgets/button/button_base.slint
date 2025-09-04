@@ -30,7 +30,7 @@ export component ButtonBase {
     // if [root.height - font_size < 0], y default 0
     // If y is not set, the font will not be centered.
     // I think this is caused by the built-in padding or margin properties in the Text component
-    padding_top: max((root.height - font_size) / 2 - 1px, 0);
+    in property <length> p_top: max((root.height - font_size) / 2 - 1px, 0);
 
     states [
         is-loading when loading: {
@@ -54,7 +54,7 @@ export component ButtonBase {
 
         // button text
         txt := Text {
-            y: root.padding_top;
+            y: root.p_top;
             text: text;
             color: plain ? white : logic_color;
             font-size: font_size;

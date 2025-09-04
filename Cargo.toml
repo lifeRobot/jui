@@ -13,12 +13,12 @@ repository = "https://github.com/lifeRobot/jui"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-slint-build = "1.12.1"
+slint-build = "1.13.0"
 cbsk_file = "2.1.3"
 
 cbsk_base = { version = "2.1.2", optional = true }
 reqwest = { version = "0.12.15", features = ["blocking"], optional = true }
-zip = { version = "4.5.0", default-features = false, features = ["deflate"], optional = true }
+zip = { version = "4.6.1", default-features = false, features = ["deflate"], optional = true }
 
 [features]
 # support SurrealismUI, you can use @surrealism import
